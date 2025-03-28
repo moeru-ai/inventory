@@ -1,0 +1,43 @@
+version: "0.2"
+ignorePaths: []
+dictionaryDefinitions: []
+dictionaries: []
+words:
+  - apierrors
+  - apiserver
+  - Ayaka
+  - cenkalti
+  - common_tasksv1
+  - fatcontext
+  - gorcon
+  - grpcotel
+  - grpcpkg
+  - grpcservers
+  - grpcservices
+  - healthz
+  - httppkg
+  - inventoryapi
+  - inventoryapiv1
+  - labstack
+  - maxbrunsfeld
+  - moeru-ai
+  - Neko
+  - nekomeowww
+  - nolint
+  - nonamedreturns
+  - opentelemetry
+  - Otel
+  - otelgrpc
+  - otelhttp
+  - otlpmetric
+  - otlpmetrichttp
+  - otlptrace
+  - otlptracehttp
+  - protovalidate
+  - robfig
+  - samber
+  - stdoutmetric
+  - stdouttrace
+  - Unmute
+ignoreWords: []
+import: []

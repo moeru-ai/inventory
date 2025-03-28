@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package apis.inventoryapi.v1;
+
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/moeru-ai/inventory/apis/inventoryapi/v1";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Moeru AI Inventory API";
+    description: "Catalog of model cards and other metadata, including API & engine benchmarks";
+    version: "1.0";
+  };
+  responses: {
+    key: "500";
+    value: {
+      description: "Internal Server Error";
+      schema: {
+        json_schema: {ref: ".apis.jsonapi.ErrorObject"}
+      }
+    }
+  }
+  responses: {
+    key: "503";
+    value: {
+      description: "Service Unavailable";
+      schema: {
+        json_schema: {ref: ".apis.jsonapi.ErrorObject"}
+      }
+    }
+  }
+};
