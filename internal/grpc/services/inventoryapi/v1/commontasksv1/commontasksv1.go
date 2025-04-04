@@ -1,10 +1,10 @@
-package common_tasksv1
+package commontasksv1
 
 import (
 	"context"
 
 	v1 "github.com/moeru-ai/inventory/apis/inventoryapi/v1"
-	"github.com/moeru-ai/inventory/internal/pkg/apierrors"
+	"github.com/moeru-ai/inventory/internal/cron/models"
 	"github.com/nekomeowww/xo/logger"
 	"go.uber.org/fx"
 )
@@ -30,5 +30,7 @@ func NewCommonTasksService() func(NewCommonTasksServiceParams) *CommonTasksServi
 }
 
 func (s *CommonTasksService) GetModels(ctx context.Context, in *v1.GetModelsRequest) (*v1.GetModelsResponse, error) {
-	return nil, apierrors.NewErrNotFound().WithDetail("not implemented").AsStatus()
+	return &v1.GetModelsResponse{
+		Models: models.Models(),
+	}, nil
 }

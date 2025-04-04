@@ -9,18 +9,55 @@ option go_package = "github.com/moeru-ai/inventory/apis/inventoryapi/v1";
 
 message GetModelsRequest {}
 
+message GetModelsModelItemEmbedding {
+  int64 dimensions = 1;
+}
+
+message GetModelsModelItemTextGeneration {}
+message GetModelsModelItemTextToSpeech {}
+message GetModelsModelItemAutomaticSpeechRecognition {}
+message GetModelsModelItemFeatureExtraction {}
+
+message GetModelsModelItemProviderCloud {}
+
+message GetModelsModelItemProviderLocal {}
+
+message GetModelsModelItem {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  bool deprecated = 4;
+
+  string provider_id = 5;
+  string provider_name = 6;
+  string provider_description = 7;
+
+  oneof provider {
+    GetModelsModelItemProviderCloud cloud = 8;
+    GetModelsModelItemProviderLocal local = 9;
+  }
+
+  oneof model_type {
+    GetModelsModelItemEmbedding embedding = 10;
+    GetModelsModelItemTextGeneration text_generation = 11;
+    GetModelsModelItemTextToSpeech text_to_speech = 12;
+    GetModelsModelItemAutomaticSpeechRecognition automatic_speech_recognition = 13;
+    GetModelsModelItemFeatureExtraction feature_extraction = 14;
+  }
+}
+
 message GetModelsResponse {
-    repeated string models = 1;
+  repeated GetModelsModelItem models = 1;
 }
 
 service CommonTasksService {
-    rpc GetModels(GetModelsRequest) returns (GetModelsResponse) {
+  rpc GetModels(GetModelsRequest) returns (GetModelsResponse) {
     option (google.api.http) = {get: "/api/v1/common-tasks/models"};
     option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
-        operation_id: "v1_common_tasks_get_models"
-        summary: "List all known models."
-        description: "List all known models."
-        tags: "CommonTasks"
+      operation_id: "v1_common_tasks_get_models"
+      summary: "List all known models."
+      description: "List all known models."
+      tags: "CommonTasks"
     };
-    }
+  }
 }

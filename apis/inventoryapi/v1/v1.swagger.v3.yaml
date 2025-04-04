@@ -208,11 +208,60 @@ components:
             used with implementation specific semantics.
           type: string
       type: object
+    v1GetModelsModelItem:
+      properties:
+        automaticSpeechRecognition:
+          $ref: '#/components/schemas/v1GetModelsModelItemAutomaticSpeechRecognition'
+        cloud:
+          $ref: '#/components/schemas/v1GetModelsModelItemProviderCloud'
+        deprecated:
+          type: boolean
+        description:
+          type: string
+        embedding:
+          $ref: '#/components/schemas/v1GetModelsModelItemEmbedding'
+        featureExtraction:
+          $ref: '#/components/schemas/v1GetModelsModelItemFeatureExtraction'
+        id:
+          type: string
+        local:
+          $ref: '#/components/schemas/v1GetModelsModelItemProviderLocal'
+        name:
+          type: string
+        providerDescription:
+          type: string
+        providerId:
+          type: string
+        providerName:
+          type: string
+        textGeneration:
+          $ref: '#/components/schemas/v1GetModelsModelItemTextGeneration'
+        textToSpeech:
+          $ref: '#/components/schemas/v1GetModelsModelItemTextToSpeech'
+      type: object
+    v1GetModelsModelItemAutomaticSpeechRecognition:
+      type: object
+    v1GetModelsModelItemEmbedding:
+      properties:
+        dimensions:
+          format: int64
+          type: string
+      type: object
+    v1GetModelsModelItemFeatureExtraction:
+      type: object
+    v1GetModelsModelItemProviderCloud:
+      type: object
+    v1GetModelsModelItemProviderLocal:
+      type: object
+    v1GetModelsModelItemTextGeneration:
+      type: object
+    v1GetModelsModelItemTextToSpeech:
+      type: object
     v1GetModelsResponse:
       properties:
         models:
           items:
-            type: string
+            $ref: '#/components/schemas/v1GetModelsModelItem'
           type: array
       type: object
 info:

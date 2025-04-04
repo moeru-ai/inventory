@@ -1,21 +1,24 @@
 package models
 
-import "time"
-
-type Model struct {
-	ID              string        `json:"id"`
-	Provider        string        `json:"provider"`
-	Dimensions      int           `json:"dimensions"`
-	ResponseTimeP99 time.Duration `json:"response_time_p99"`
-}
+import (
+	v1 "github.com/moeru-ai/inventory/apis/inventoryapi/v1"
+)
 
 var (
-	commonTasksEmbeddingModels = []*Model{
+	commonTasksEmbeddingModels = []*v1.GetModelsModelItem{
 		{
-			ID:              "voyage-3-large",
-			Provider:        "Voyage",
-			Dimensions:      0,
-			ResponseTimeP99: 0,
+			Id:           "voyage-3-large",
+			ProviderId:   "voyage.ai",
+			ProviderName: "Voyage",
+			ModelType: &v1.GetModelsModelItem_Embedding{
+				Embedding: &v1.GetModelsModelItemEmbedding{
+					Dimensions: 0,
+				},
+			},
 		},
 	}
 )
+
+func Models() []*v1.GetModelsModelItem {
+	return commonTasksEmbeddingModels
+}
