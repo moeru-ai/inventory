@@ -25,11 +25,11 @@ type Cron struct {
 
 func NewCron() func(NewCronParams) (*Cron, error) {
 	return func(NewCronParams) (*Cron, error) {
-		models.EmbeddingVoyageAIVoyage3Large()
+		models.EmbeddingVoyageAI()
 
 		c := cron.New(cron.WithSeconds())
 
-		lo.Must(c.AddFunc("@daily", models.EmbeddingVoyageAIVoyage3Large))
+		lo.Must(c.AddFunc("@daily", models.EmbeddingVoyageAI))
 
 		return &Cron{
 			Cron: c,
