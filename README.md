@@ -12,6 +12,17 @@ curl -L -X GET -v 'https://inventory.moeru.ai/api/v1/common-tasks/models' | jq
 
 ## Getting Started
 
+### Configuration
+
+No `config.yaml` nor `config.toml` required. All configurable from environment varaiables.
+
+Required:
+
+| Envrionment Variable | Provider  | Description |
+| -------------------- | --------- | ----------- |
+| `OPENAI_API_KEY`     | OpenAI    |             |
+| `VOYAGE_API_KEY`     | Voyage.ai |             |
+
 ### Build
 
 > require `go` 1.23+

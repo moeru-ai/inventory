@@ -16,82 +16,54 @@ import (
 	"github.com/samber/lo"
 )
 
-type VoyageAIModel struct {
+type OpenAIModel struct {
 	ID          string
 	Name        string
 	Description string
 	MaxTokens   int
 }
 
-var voyageAIModels = []VoyageAIModel{
+var openAIModels = []OpenAIModel{
 	{
-		ID:          "voyage-3.5-lite",
-		Name:        "Voyage 3.5 Lite",
-		Description: "Lightweight embedding model",
-		// https://docs.voyageai.com/reference/embeddings-api
-		MaxTokens: 1_000_000, //nolint:mnd
+		ID:          "text-embedding-3-small",
+		Name:        "Text Embedding 3 Small",
+		Description: "Most capable small embedding model for both english and non-english tasks",
+		// https://platform.openai.com/docs/guides/embeddings
+		MaxTokens: 8_191, //nolint:mnd
 	},
 	{
-		ID:          "voyage-3.5",
-		Name:        "Voyage 3.5",
-		Description: "Standard embedding model",
-		// https://docs.voyageai.com/reference/embeddings-api
-		MaxTokens: 320_000, //nolint:mnd
+		ID:          "text-embedding-3-large",
+		Name:        "Text Embedding 3 Large",
+		Description: "Most capable large embedding model for both english and non-english tasks",
+		// https://platform.openai.com/docs/guides/embeddings
+		MaxTokens: 8_191, //nolint:mnd
 	},
 	{
-		ID:          "voyage-2",
-		Name:        "Voyage 2",
-		Description: "Standard embedding model",
-		// https://docs.voyageai.com/reference/embeddings-api
-		MaxTokens: 320_000, //nolint:mnd
-	},
-	{
-		ID:          "voyage-3-large",
-		Name:        "Voyage 3 Large",
-		Description: "Large embedding model",
-		// https://docs.voyageai.com/reference/embeddings-api
-		MaxTokens: 120_000, //nolint:mnd
-	},
-	{
-		ID:          "voyage-code-3",
-		Name:        "Voyage Code 3",
-		Description: "Code-specialized embedding model",
-		// https://docs.voyageai.com/reference/embeddings-api
-		MaxTokens: 120_000, //nolint:mnd
-	},
-	{
-		ID:          "voyage-finance-2",
-		Name:        "Voyage Finance 2",
-		Description: "Finance-specialized embedding model",
-		// https://docs.voyageai.com/reference/embeddings-api
-		MaxTokens: 120_000, //nolint:mnd
-	},
-	{
-		ID:          "voyage-law-2",
-		Name:        "Voyage Law 2",
-		Description: "Law-specialized embedding model",
-		// https://docs.voyageai.com/reference/embeddings-api
-		MaxTokens: 120_000, //nolint:mnd
+		ID:          "text-embedding-ada-002",
+		Name:        "Text Embedding Ada 002",
+		Description: "Previous generation embedding model",
+		// https://platform.openai.com/docs/guides/embeddings
+		MaxTokens: 8_191, //nolint:mnd
 	},
 }
 
-func getVoyageAIModel(modelID string) (VoyageAIModel, bool) {
-	return lo.Find(voyageAIModels, func(m VoyageAIModel) bool {
+func getOpenAIModel(modelID string) (OpenAIModel, bool) {
+	return lo.Find(openAIModels, func(m OpenAIModel) bool {
 		return m.ID == modelID
 	})
 }
 
-func EmbeddingVoyageAI() {
-	for _, model := range voyageAIModels {
-		err := embeddingVoyageAI(model.ID, "Hello, world!")
+func EmbeddingOpenAI() {
+	for _, model := range openAIModels {
+		err := embeddingOpenAI(model.ID, "Hello, world!")
 		if err != nil {
 			slog.Error("failed to embed model", slog.Any("error", err))
 		}
 	}
 }
 
-func embeddingVoyageAI(modelID string, input string) error {
-	model, found := getVoyageAIModel(modelID)
+func embeddingOpenAI(modelID string, input string) error {
+	model, found := getOpenAIModel(modelID)
 	if !found {
 		return fmt.Errorf("unsupported model ID: %s", modelID)
 	}
@@ -104,13 +76,14 @@ func embeddingVoyageAI(modelID string, input string) error {
 		"input": input,
 	}))
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "https://api.voyageai.com/v1/embeddings", bytes.NewBuffer(body))
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, "https://api.openai.com/v1/embeddings", bytes.NewBuffer(body))
 	if err != nil {
 		slog.Error("failed to create request", slog.Any("error", err))
 		return err
 	}
 
-	req.Header.Set("Authorization", "Bearer "+os.Getenv("VOYAGE_API_KEY"))
+	req.Header.Set("Authorization", "Bearer "+os.Getenv("OPENAI_API_KEY"))
+	req.Header.Set("Content-Type", "application/json")
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -163,15 +136,12 @@ func embeddingVoyageAI(modelID string, input string) error {
 			Name:         model.Name,
 			Description:  model.Description,
 			Deprecated:   false,
-			ProviderId:   "voyage.ai",
-			ProviderName: "Voyage",
+			ProviderId:   "openai.com",
+			ProviderName: "OpenAI",
 			ProviderDescription: "" +
-				"Voyage AI delivers state-of-the-art embedding and reranking models that " +
-				"supercharge intelligent retrieval for enterprises, driving forward " +
-				"retrieval-augmented generation (RAG) and reliable LLM applications. " +
-				"Our solutions are designed to optimize the way businesses access and " +
-				"utilize information, making retrieval faster, more accurate, and " +
-				"scalable." +
+				"OpenAI is an AI research and deployment company. Our mission is to " +
+				"ensure that artificial general intelligence benefits all of " +
+				"humanity." +
 				"",
 			Provider: &v1.GetModelsModelItem_Cloud{
 				Cloud: &v1.GetModelsModelItemProviderCloud{},
