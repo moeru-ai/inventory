@@ -208,18 +208,28 @@ components:
             used with implementation specific semantics.
           type: string
       type: object
+    v1CommonTask:
+      default: CommonTaskUnspecified
+      enum:
+        - CommonTaskUnspecified
+        - CommonTaskTextEmbedding
+        - CommonTaskTextGeneration
+        - CommonTaskTextToSpeech
+        - CommonTaskAutomaticSpeechRecognition
+        - CommonTaskFeatureExtraction
+      type: string
     v1GetModelsModelItem:
       properties:
         automaticSpeechRecognition:
           $ref: '#/components/schemas/v1GetModelsModelItemAutomaticSpeechRecognition'
         cloud:
           $ref: '#/components/schemas/v1GetModelsModelItemProviderCloud'
+        commonTask:
+          $ref: '#/components/schemas/v1CommonTask'
         deprecated:
           type: boolean
         description:
           type: string
-        embedding:
-          $ref: '#/components/schemas/v1GetModelsModelItemEmbedding'
         featureExtraction:
           $ref: '#/components/schemas/v1GetModelsModelItemFeatureExtraction'
         id:
@@ -234,6 +244,8 @@ components:
           type: string
         providerName:
           type: string
+        textEmbedding:
+          $ref: '#/components/schemas/v1GetModelsModelItemTextEmbedding'
         textGeneration:
           $ref: '#/components/schemas/v1GetModelsModelItemTextGeneration'
         textToSpeech:
@@ -241,17 +253,17 @@ components:
       type: object
     v1GetModelsModelItemAutomaticSpeechRecognition:
       type: object
-    v1GetModelsModelItemEmbedding:
-      properties:
-        dimensions:
-          format: int64
-          type: string
-      type: object
     v1GetModelsModelItemFeatureExtraction:
       type: object
     v1GetModelsModelItemProviderCloud:
       type: object
     v1GetModelsModelItemProviderLocal:
+      type: object
+    v1GetModelsModelItemTextEmbedding:
+      properties:
+        dimensions:
+          format: int64
+          type: string
       type: object
     v1GetModelsModelItemTextGeneration:
       type: object
