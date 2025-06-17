@@ -1,5 +1,7 @@
 package types
 
+import "net/http"
+
 type Capability string // enum
 
 const (
@@ -31,9 +33,10 @@ const (
 )
 
 type Provider struct {
-	APIBaseURL string                  `json:"api_base_url"`
-	Name       string                  `json:"name"`
-	Endpoints  map[EndpointType]string `json:"endpoints"`
+	APIBaseURL        string                             `json:"api_base_url"`
+	Name              string                             `json:"name"`
+	Endpoints         map[EndpointType]string            `json:"endpoints"`
+	ParseResponseFunc map[EndpointType]ParseResponseFunc `json:"parse_response_func"`
 }
 
 type Model struct {
@@ -51,3 +54,5 @@ type Catalog struct {
 	Providers   []Provider `json:"providers"`
 	Version     string     `json:"version"` // semantic version
 }
+
+type ParseResponseFunc func(resp *http.Response, requestBody map[string]any) error

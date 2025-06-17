@@ -9,7 +9,8 @@ import (
 	"slices"
 	"sync"
 
-	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/providers"
+	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/providers/minimax"
+	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/providers/openai"
 	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/types"
 	"github.com/nekomeowww/xo/logger"
 	"go.uber.org/zap"
@@ -17,17 +18,19 @@ import (
 )
 
 var providersMap = map[string]types.Provider{
-	providers.ProviderOpenAI.Name: providers.ProviderOpenAI,
+	openai.Provider.Name:  openai.Provider,
+	minimax.Provider.Name: minimax.Provider,
 }
 
 var apiKeyMap = map[string]string{
-	providers.ProviderOpenAI.Name: os.Getenv("OPENAI_API_KEY"),
+	openai.Provider.Name:  os.Getenv("OPENAI_API_KEY"),
+	minimax.Provider.Name: os.Getenv("MINIMAX_API_KEY"),
 }
 
 var wg = sync.WaitGroup{}
 
 var mainLogger, _ = logger.NewLogger(
-	logger.WithLevel(zapcore.InfoLevel),
+	logger.WithLevel(zapcore.DebugLevel),
 	logger.WithCallFrameSkip(1),
 	logger.WithNamespace("jem-generator"),
 )
@@ -108,10 +111,21 @@ func checkChatCompletion(model types.Model, provider types.Provider, ctx context
 	}
 	defer response.Body.Close()
 
+	err = provider.ParseResponseFunc[types.EndpointTypeChatCompletion](response, requestBody)
+	if err != nil {
+		mainLogger.With(
+			zap.String("model", model.ModelID),
+			zap.String("provider", provider.Name),
+			zap.Int("status_code", response.StatusCode),
+			zap.Error(err),
+		).Error("Error checking chat completion.")
+
+		return
+	}
+
 	mainLogger.With(
 		zap.String("model", model.ModelID),
 		zap.String("provider", provider.Name),
-		zap.Int("status_code", response.StatusCode),
 	).Info("Done.")
 }
 
@@ -144,7 +158,8 @@ func main() {
 	}
 
 	// detect capabilities
-	models := providers.ModelOpenAI
+	models := openai.Models
+	models = append(models, minimax.Models...)
 
 	for _, model := range models {
 		detectEndpoints(model, context.TODO())
