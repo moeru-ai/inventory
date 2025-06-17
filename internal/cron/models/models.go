@@ -41,7 +41,7 @@ func (l *ModelList) Find(modelID string) (*v1.GetModelsModelItem, bool) {
 	defer l.RUnlock()
 
 	for _, model := range l.textsFeatureExtraction {
-		if model.Id == modelID {
+		if model.GetId() == modelID {
 			return model, true
 		}
 	}
