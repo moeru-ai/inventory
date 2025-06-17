@@ -152,13 +152,11 @@ func embeddingVoyageAI(modelID string, input string) error {
 
 	embedding := utils.GetByJSONPath[[]float64](m, "{ .data[0].embedding }")
 
-	existingModel, ok := lo.Find(commonTasksEmbeddingModels, func(item *v1.GetModelsModelItem) bool {
-		return item.GetId() == model.ID
-	})
+	existingModel, ok := commonTasks.Find(model.ID)
 	if ok {
 		existingModel.GetEmbedding().Dimensions = int64(len(embedding))
 	} else {
-		commonTasksEmbeddingModels = append(commonTasksEmbeddingModels, &v1.GetModelsModelItem{
+		commonTasks.Add(&v1.GetModelsModelItem{
 			Id:           model.ID,
 			Name:         model.Name,
 			Description:  model.Description,
