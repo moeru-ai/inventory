@@ -16,7 +16,7 @@ import (
 var miniMaxLogger, _ = logger.NewLogger(
 	logger.WithLevel(zapcore.DebugLevel),
 	logger.WithCallFrameSkip(1),
-	logger.WithNamespace("jem-generator"),
+	logger.WithNamespace("minimax"),
 )
 
 type ChatCompletionResponse struct {
@@ -24,6 +24,19 @@ type ChatCompletionResponse struct {
 		StatusCode int    `json:"status_code"`
 		StatusMsg  string `json:"status_msg"`
 	} `json:"base_resp"`
+}
+
+func checkChatCompletionResponse(responseBodyStr string) error {
+	var parsedResponse ChatCompletionResponse
+	if err := json.Unmarshal([]byte(responseBodyStr), &parsedResponse); err != nil {
+		return err
+	}
+
+	if parsedResponse.BaseResp.StatusCode != 0 {
+		return fmt.Errorf("status code: %d, status msg: %s", parsedResponse.BaseResp.StatusCode, parsedResponse.BaseResp.StatusMsg)
+	}
+
+	return nil
 }
 
 var Provider = types.Provider{
@@ -51,22 +64,19 @@ var Provider = types.Provider{
 					if responseSlice == "" {
 						continue
 					}
-					var parsedResponse ChatCompletionResponse
-					if err := json.Unmarshal([]byte(responseSlice), &parsedResponse); err != nil {
+					err := checkChatCompletionResponse(responseSlice)
+					if err != nil {
 						return err
 					}
 				}
 				return nil
 			}
 
-			var parsedResponse ChatCompletionResponse
-			if err := json.Unmarshal([]byte(responseBodyStr), &parsedResponse); err != nil {
+			err = checkChatCompletionResponse(responseBodyStr)
+			if err != nil {
 				return err
 			}
 
-			if parsedResponse.BaseResp.StatusCode != 0 {
-				return fmt.Errorf("status code: %d, status msg: %s", parsedResponse.BaseResp.StatusCode, parsedResponse.BaseResp.StatusMsg)
-			}
 			return nil
 		},
 	},
