@@ -2,9 +2,19 @@ package openai
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/types"
+	"github.com/nekomeowww/xo/logger"
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
+)
+
+var openaiLogger, _ = logger.NewLogger(
+	logger.WithLevel(zapcore.DebugLevel),
+	logger.WithCallFrameSkip(1),
+	logger.WithNamespace("openai"),
 )
 
 var Provider = types.Provider{
@@ -18,6 +28,14 @@ var Provider = types.Provider{
 			if resp.StatusCode != http.StatusOK {
 				return fmt.Errorf("status code: %d", resp.StatusCode)
 			}
+
+			responseBody, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return err
+			}
+
+			responseBodyStr := string(responseBody)
+			openaiLogger.Debug("response body", zap.String("response_body", responseBodyStr))
 
 			return nil
 		},
