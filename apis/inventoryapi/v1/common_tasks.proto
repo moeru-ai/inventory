@@ -9,8 +9,17 @@ option go_package = "github.com/moeru-ai/inventory/apis/inventoryapi/v1";
 
 message GetModelsRequest {}
 
-message GetModelsModelItemEmbedding {
+message GetModelsModelItemTextEmbedding {
   int64 dimensions = 1;
+}
+
+enum CommonTask {
+  CommonTaskUnspecified = 0;
+  CommonTaskTextEmbedding = 1;
+  CommonTaskTextGeneration = 2;
+  CommonTaskTextToSpeech = 3;
+  CommonTaskAutomaticSpeechRecognition = 4;
+  CommonTaskFeatureExtraction = 5;
 }
 
 message GetModelsModelItemTextGeneration {}
@@ -38,12 +47,14 @@ message GetModelsModelItem {
   }
 
   oneof model_type {
-    GetModelsModelItemEmbedding embedding = 10;
+    GetModelsModelItemTextEmbedding text_embedding = 10;
     GetModelsModelItemTextGeneration text_generation = 11;
     GetModelsModelItemTextToSpeech text_to_speech = 12;
     GetModelsModelItemAutomaticSpeechRecognition automatic_speech_recognition = 13;
     GetModelsModelItemFeatureExtraction feature_extraction = 14;
   }
+
+  CommonTask common_task = 15;
 }
 
 message GetModelsResponse {

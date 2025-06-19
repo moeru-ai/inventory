@@ -119,6 +119,18 @@
         },
         "type": "object"
       },
+      "v1CommonTask": {
+        "default": "CommonTaskUnspecified",
+        "enum": [
+          "CommonTaskUnspecified",
+          "CommonTaskTextEmbedding",
+          "CommonTaskTextGeneration",
+          "CommonTaskTextToSpeech",
+          "CommonTaskAutomaticSpeechRecognition",
+          "CommonTaskFeatureExtraction"
+        ],
+        "type": "string"
+      },
       "v1GetModelsModelItem": {
         "properties": {
           "automaticSpeechRecognition": {
@@ -127,14 +139,14 @@
           "cloud": {
             "$ref": "#/components/schemas/v1GetModelsModelItemProviderCloud"
           },
+          "commonTask": {
+            "$ref": "#/components/schemas/v1CommonTask"
+          },
           "deprecated": {
             "type": "boolean"
           },
           "description": {
             "type": "string"
-          },
-          "embedding": {
-            "$ref": "#/components/schemas/v1GetModelsModelItemEmbedding"
           },
           "featureExtraction": {
             "$ref": "#/components/schemas/v1GetModelsModelItemFeatureExtraction"
@@ -157,6 +169,9 @@
           "providerName": {
             "type": "string"
           },
+          "textEmbedding": {
+            "$ref": "#/components/schemas/v1GetModelsModelItemTextEmbedding"
+          },
           "textGeneration": {
             "$ref": "#/components/schemas/v1GetModelsModelItemTextGeneration"
           },
@@ -169,15 +184,6 @@
       "v1GetModelsModelItemAutomaticSpeechRecognition": {
         "type": "object"
       },
-      "v1GetModelsModelItemEmbedding": {
-        "properties": {
-          "dimensions": {
-            "format": "int64",
-            "type": "string"
-          }
-        },
-        "type": "object"
-      },
       "v1GetModelsModelItemFeatureExtraction": {
         "type": "object"
       },
@@ -185,6 +191,15 @@
         "type": "object"
       },
       "v1GetModelsModelItemProviderLocal": {
+        "type": "object"
+      },
+      "v1GetModelsModelItemTextEmbedding": {
+        "properties": {
+          "dimensions": {
+            "format": "int64",
+            "type": "string"
+          }
+        },
         "type": "object"
       },
       "v1GetModelsModelItemTextGeneration": {

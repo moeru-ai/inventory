@@ -125,13 +125,11 @@ func embeddingOpenAI(modelID string, input string) error {
 
 	embedding := utils.GetByJSONPath[[]float64](m, "{ .data[0].embedding }")
 
-	existingModel, ok := lo.Find(commonTasksEmbeddingModels, func(item *v1.GetModelsModelItem) bool {
-		return item.GetId() == model.ID
-	})
+	existingModel, ok := commonTasks.Find(model.ID)
 	if ok {
-		existingModel.GetEmbedding().Dimensions = int64(len(embedding))
+		existingModel.GetTextEmbedding().Dimensions = int64(len(embedding))
 	} else {
-		commonTasksEmbeddingModels = append(commonTasksEmbeddingModels, &v1.GetModelsModelItem{
+		commonTasks.Add(&v1.GetModelsModelItem{
 			Id:           model.ID,
 			Name:         model.Name,
 			Description:  model.Description,
@@ -146,8 +144,8 @@ func embeddingOpenAI(modelID string, input string) error {
 			Provider: &v1.GetModelsModelItem_Cloud{
 				Cloud: &v1.GetModelsModelItemProviderCloud{},
 			},
-			ModelType: &v1.GetModelsModelItem_Embedding{
-				Embedding: &v1.GetModelsModelItemEmbedding{
+			ModelType: &v1.GetModelsModelItem_TextEmbedding{
+				TextEmbedding: &v1.GetModelsModelItemTextEmbedding{
 					Dimensions: int64(len(embedding)),
 				},
 			},
