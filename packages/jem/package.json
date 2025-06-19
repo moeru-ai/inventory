@@ -1,0 +1,13 @@
+{
+  "name": "@moeru-ai/jem",
+  "version": "0.1.0",
+  "description": "A open-source AI model catalog.",
+  "main": "index.js",
+  "keywords": [
+    "ai",
+    "model",
+    "catalog"
+  ],
+  "author": "moeru-ai",
+  "license": "MIT"
+}

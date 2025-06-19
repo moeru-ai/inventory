@@ -17,9 +17,11 @@ var openaiLogger, _ = logger.NewLogger(
 	logger.WithNamespace("openai"),
 )
 
+const providerName = "openai"
+
 var Provider = types.Provider{
 	APIBaseURL: "https://api.openai.com/v1",
-	Name:       "openai",
+	Name:       providerName,
 	Endpoints: map[types.EndpointType]string{
 		types.EndpointTypeChatCompletion: "/chat/completions",
 	},
@@ -40,24 +42,23 @@ var Provider = types.Provider{
 			return nil
 		},
 	},
-}
-
-var Models = []types.Model{
-	{
-		ModelID:  "gpt-4o",
-		Provider: Provider.Name,
-		Endpoints: []types.EndpointType{
-			types.EndpointTypeChatCompletion,
-		},
-		Capabilities: []types.Capability{
-			types.CapabilityToolCall,
-			types.CapabilityStreaming,
-		},
-		InputModalities: []types.Modality{
-			types.ModalityText,
-		},
-		OutputModalities: []types.Modality{
-			types.ModalityText,
+	Models: []types.Model{
+		{
+			ModelID:  "gpt-4o",
+			Provider: providerName,
+			Endpoints: []types.EndpointType{
+				types.EndpointTypeChatCompletion,
+			},
+			Capabilities: []types.Capability{
+				types.CapabilityToolCall,
+				types.CapabilityStreaming,
+			},
+			InputModalities: []types.Modality{
+				types.ModalityText,
+			},
+			OutputModalities: []types.Modality{
+				types.ModalityText,
+			},
 		},
 	},
 }

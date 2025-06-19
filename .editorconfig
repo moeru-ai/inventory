@@ -1,0 +1,13 @@
+[*]
+insert_final_newline = true
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+
+[*.go]
+indent_size = 4
+indent_style = tab
+
+[*.ts,*.json]
+indent_size = 2
+indent_style = space
