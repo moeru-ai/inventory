@@ -1,0 +1,35 @@
+// Auto-generated file. Do not edit.
+
+import type { Provider } from "../types/index";
+
+export const {{ .Name }}: Provider = {
+  name: "{{ .Name }}",
+  apiBaseURL: "{{ .APIBaseURL }}",
+  endpoints: {
+    {{ range $type, $path := .Endpoints }}"{{ $type }}": "{{ $path }}",
+    {{ end }}
+  },
+  models: [
+    {{ range $index, $model := .Models }}{
+      modelId: "{{ $model.ModelID }}",
+      provider: "{{ $model }}",
+      endpoints: [
+        {{ range $index, $endpoint := $model.Endpoints }}"{{ $endpoint }}",
+        {{ end }}
+      ],
+      capabilities: [
+        {{ range $index, $capability := $model.Capabilities }}"{{ $capability }}",
+        {{ end }}
+      ],
+      inputModalities: [
+        {{ range $index, $modality := $model.InputModalities }}"{{ $modality }}",
+        {{ end }}
+      ],
+      outputModalities: [
+        {{ range $index, $modality := $model.OutputModalities }}"{{ $modality }}",
+        {{ end }}
+      ],
+    },
+    {{ end }}
+  ],
+}

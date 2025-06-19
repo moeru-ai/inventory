@@ -3,9 +3,12 @@ package main
 import (
 	"bytes"
 	"context"
+	_ "embed"
 	"encoding/json"
+	"html/template"
 	"net/http"
 	"os"
+	"path/filepath"
 	"slices"
 	"sync"
 
@@ -34,6 +37,15 @@ var mainLogger, _ = logger.NewLogger(
 	logger.WithCallFrameSkip(1),
 	logger.WithNamespace("jem-generator"),
 )
+
+var (
+	//go:embed templates/providers.tmpl
+	templateStrProviders string
+	//go:embed templates/index.tmpl
+	templateStrIndex string
+)
+
+const fileMode = 0755
 
 func createRequestBody(model types.Model) map[string]any {
 	requestBody := map[string]any{
@@ -157,15 +169,71 @@ func main() {
 		}
 	}
 
-	// detect capabilities
-	models := openai.Models
-	models = append(models, minimax.Models...)
-
-	for _, model := range models {
-		detectEndpoints(model, context.TODO())
+	outputDir := os.Getenv("OUTPUT_DIR")
+	if outputDir == "" {
+		mainLogger.Error("Output directory is not set.")
+		return
 	}
 
-	// TODO: generate npm package
+	err := os.MkdirAll(outputDir, fileMode)
+	if err != nil {
+		mainLogger.With(
+			zap.String("output_dir", outputDir),
+		).Error("Error creating output directory.", zap.Error(err))
+
+		return
+	}
+
+	// detect capabilities
+
+	for _, provider := range providersMap {
+		for _, model := range provider.Models {
+			detectEndpoints(model, context.TODO())
+		}
+	}
 
 	wg.Wait()
+
+	// generate npm package
+	templateProviders := template.Must(template.New("providers").Parse(templateStrProviders))
+
+	for _, provider := range providersMap {
+		fileContent := bytes.NewBuffer(nil)
+		err := templateProviders.Execute(fileContent, provider)
+
+		if err != nil {
+			mainLogger.With(
+				zap.String("provider", provider.Name),
+			).Error("Error executing template.", zap.Error(err))
+
+			return
+		}
+
+		var providerFilePath string
+		if filepath.IsAbs(outputDir) {
+			providerFilePath = filepath.Join(outputDir, provider.Name+".ts")
+		} else {
+			wd, err := os.Getwd()
+			if err != nil {
+				mainLogger.Error("Error getting working directory.", zap.Error(err))
+				return
+			}
+
+			providerFilePath = filepath.Join(wd, outputDir, provider.Name+".ts")
+		}
+
+		err = os.WriteFile(providerFilePath, fileContent.Bytes(), fileMode)
+
+		if err != nil {
+			mainLogger.With(
+				zap.String("file_path", providerFilePath),
+			).Error("Error writing file.", zap.Error(err))
+
+			return
+		}
+
+		mainLogger.With(
+			zap.String("file_path", providerFilePath),
+		).Info("File written.")
+	}
 }
