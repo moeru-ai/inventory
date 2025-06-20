@@ -18,9 +18,3 @@ export function hasCapabilities<N extends ProviderNames, M extends ModelNames<N>
   });
   return result;
 }
-
-hasCapabilities(
-  "unknown" as ProviderNames,
-  "unknown" as ModelNames<ProviderNames>,
-  ["unknown" as Capabilities<ProviderNames>]
-);
