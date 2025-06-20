@@ -1,2 +1,5 @@
-{{ range $index, $provider := . }}export * from "./{{ $provider.Name }}";
-{{ end }}
+// Auto-generated file. Do not edit.
+
+{{ range $provider := . -}}
+export * from "./{{ $provider.Name }}";
+{{ end -}}

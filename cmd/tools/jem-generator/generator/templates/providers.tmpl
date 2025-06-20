@@ -1,8 +1,8 @@
 // Auto-generated file. Do not edit.
 
-import type { Provider } from "../types/index";
+import type { Provider, Model } from "../types/index";
 
-export const {{ .Name }}: Provider = {
+export const {{ .Name }} = {
   name: "{{ .Name }}",
   apiBaseURL: "{{ .APIBaseURL }}",
   endpoints: {
@@ -37,5 +37,5 @@ export const {{ .Name }}: Provider = {
       ],
     },
     {{- end -}}
-  ],
-}
+  ] as const satisfies Model[],
+} as const satisfies Provider
