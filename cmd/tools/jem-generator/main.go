@@ -138,6 +138,7 @@ var endpointsDetectionMap = map[types.EndpointType]func(model types.Model, provi
 func detectEndpoints(model types.Model, provider types.Provider, ctx context.Context) {
 	for _, endpoint := range model.Endpoints {
 		fn := endpointsDetectionMap[endpoint]
+
 		errorGroup.Go(func() error {
 			fn(model, provider, ctx)
 			return nil
