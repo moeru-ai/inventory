@@ -13,9 +13,9 @@ func TestGenerator(t *testing.T) {
 	t.Run("generate provider", func(t *testing.T) {
 		expected := `// Auto-generated file. Do not edit.
 
-import type { Provider } from "../types/index";
+import type { Provider, Model } from "../types/index";
 
-export const test: Provider = {
+export const test = {
   name: "test",
   apiBaseURL: "https://api.test.com",
   endpoints: {"audio-music": "/audio/music","audio-speech": "/audio/speech","chat-completion": "/chat/completions","completion": "/completions","embedding": "/embeddings","image-generation": "/images/generations",},
@@ -26,8 +26,8 @@ export const test: Provider = {
       capabilities: ["reasoning","streaming","tool-call",],
       inputModalities: ["audio","image","text","video","vector",],
       outputModalities: ["audio","image","text","video","vector",],
-    },],
-}
+    },] as const satisfies Model[],
+} as const satisfies Provider
 `
 
 		generator := Generator{}
