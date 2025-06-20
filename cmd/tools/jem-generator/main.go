@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"os"
 	"slices"
-	"sync"
 
 	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/generator"
 	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/providers/minimax"
@@ -17,6 +16,7 @@ import (
 	"github.com/nekomeowww/xo/logger"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"golang.org/x/sync/errgroup"
 )
 
 var providers = []types.Provider{
@@ -29,7 +29,7 @@ var apiKeyMap = map[string]string{
 	minimax.Provider.Name: os.Getenv("MINIMAX_API_KEY"),
 }
 
-var wg = sync.WaitGroup{}
+var errorGroup = new(errgroup.Group)
 
 var mainLogger, _ = logger.NewLogger(
 	logger.WithLevel(zapcore.DebugLevel),
@@ -61,8 +61,6 @@ func createRequestBody(model types.Model) map[string]any {
 }
 
 func checkChatCompletion(model types.Model, provider types.Provider, ctx context.Context) {
-	defer wg.Done()
-
 	mainLogger.With(
 		zap.String("model", model.ModelID),
 		zap.String("provider", provider.Name),
@@ -139,10 +137,11 @@ var endpointsDetectionMap = map[types.EndpointType]func(model types.Model, provi
 
 func detectEndpoints(model types.Model, provider types.Provider, ctx context.Context) {
 	for _, endpoint := range model.Endpoints {
-		wg.Add(1)
-
 		fn := endpointsDetectionMap[endpoint]
-		go fn(model, provider, ctx)
+		errorGroup.Go(func() error {
+			fn(model, provider, ctx)
+			return nil
+		})
 	}
 }
 
@@ -181,7 +180,11 @@ func main() {
 		}
 	}
 
-	wg.Wait()
+	err = errorGroup.Wait()
+	if err != nil {
+		mainLogger.Error("Error detecting endpoints. Stopping...", zap.Error(err))
+		return
+	}
 
 	// generate
 	generator, err := generator.New(providers, outputDir)
