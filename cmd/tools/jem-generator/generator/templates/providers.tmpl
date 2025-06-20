@@ -10,23 +10,27 @@ export const {{ .Name }}: Provider = {
     {{ end }}
   },
   models: [
-    {{ range $index, $model := .Models }}{
+    {{ range $model := .Models }}{
       modelId: "{{ $model.ModelID }}",
-      provider: "{{ $model }}",
+      provider: "{{ $model.Provider }}",
       endpoints: [
-        {{ range $index, $endpoint := $model.Endpoints }}"{{ $endpoint }}",
+        {{ range $endpoint := $model.Endpoints -}}
+        "{{ $endpoint }}",
         {{ end }}
       ],
       capabilities: [
-        {{ range $index, $capability := $model.Capabilities }}"{{ $capability }}",
+        {{ range $capability := $model.Capabilities -}}
+        "{{ $capability }}",
         {{ end }}
       ],
       inputModalities: [
-        {{ range $index, $modality := $model.InputModalities }}"{{ $modality }}",
+        {{ range $modality := $model.InputModalities -}}
+          "{{ $modality }}",
         {{ end }}
       ],
       outputModalities: [
-        {{ range $index, $modality := $model.OutputModalities }}"{{ $modality }}",
+        {{ range $modality := $model.OutputModalities -}}
+          "{{ $modality }}",
         {{ end }}
       ],
     },

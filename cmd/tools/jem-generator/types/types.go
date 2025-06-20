@@ -49,11 +49,4 @@ type Model struct {
 	Provider         string         `json:"provider"`
 }
 
-type Catalog struct {
-	GeneratedAt string     `json:"generated_at"` // ISO 8601 timestamp
-	Models      []Model    `json:"models"`
-	Providers   []Provider `json:"providers"`
-	Version     string     `json:"version"` // semantic version
-}
-
 type ParseResponseFunc func(resp *http.Response, requestBody map[string]any) error

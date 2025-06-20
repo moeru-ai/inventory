@@ -1,0 +1,2 @@
+{{ range $index, $provider := . }}export * from "./{{ $provider.Name }}";
+{{ end }}

@@ -5,13 +5,12 @@ import (
 	"context"
 	_ "embed"
 	"encoding/json"
-	"html/template"
 	"net/http"
 	"os"
-	"path/filepath"
 	"slices"
 	"sync"
 
+	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/generator"
 	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/providers/minimax"
 	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/providers/openai"
 	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/types"
@@ -20,9 +19,9 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-var providersMap = map[string]types.Provider{
-	openai.Provider.Name:  openai.Provider,
-	minimax.Provider.Name: minimax.Provider,
+var providers = []types.Provider{
+	openai.Provider,
+	minimax.Provider,
 }
 
 var apiKeyMap = map[string]string{
@@ -36,13 +35,6 @@ var mainLogger, _ = logger.NewLogger(
 	logger.WithLevel(zapcore.DebugLevel),
 	logger.WithCallFrameSkip(1),
 	logger.WithNamespace("jem-generator"),
-)
-
-var (
-	//go:embed templates/providers.tmpl
-	templateStrProviders string
-	//go:embed templates/index.tmpl
-	templateStrIndex string
 )
 
 const fileMode = 0755
@@ -145,9 +137,7 @@ var endpointsDetectionMap = map[types.EndpointType]func(model types.Model, provi
 	types.EndpointTypeChatCompletion: checkChatCompletion,
 }
 
-func detectEndpoints(model types.Model, ctx context.Context) {
-	provider := providersMap[model.Provider]
-
+func detectEndpoints(model types.Model, provider types.Provider, ctx context.Context) {
 	for _, endpoint := range model.Endpoints {
 		wg.Add(1)
 
@@ -158,7 +148,7 @@ func detectEndpoints(model types.Model, ctx context.Context) {
 
 func main() {
 	// load configurations
-	for _, provider := range providersMap {
+	for _, provider := range providers {
 		apiKey := apiKeyMap[provider.Name]
 		if apiKey == "" {
 			mainLogger.With(
@@ -186,54 +176,26 @@ func main() {
 
 	// detect capabilities
 
-	for _, provider := range providersMap {
+	for _, provider := range providers {
 		for _, model := range provider.Models {
-			detectEndpoints(model, context.TODO())
+			detectEndpoints(model, provider, context.TODO())
 		}
 	}
 
 	wg.Wait()
 
-	// generate npm package
-	templateProviders := template.Must(template.New("providers").Parse(templateStrProviders))
-
-	for _, provider := range providersMap {
-		fileContent := bytes.NewBuffer(nil)
-		err := templateProviders.Execute(fileContent, provider)
-
-		if err != nil {
-			mainLogger.With(
-				zap.String("provider", provider.Name),
-			).Error("Error executing template.", zap.Error(err))
-
-			return
-		}
-
-		var providerFilePath string
-		if filepath.IsAbs(outputDir) {
-			providerFilePath = filepath.Join(outputDir, provider.Name+".ts")
-		} else {
-			wd, err := os.Getwd()
-			if err != nil {
-				mainLogger.Error("Error getting working directory.", zap.Error(err))
-				return
-			}
-
-			providerFilePath = filepath.Join(wd, outputDir, provider.Name+".ts")
-		}
-
-		err = os.WriteFile(providerFilePath, fileContent.Bytes(), fileMode)
-
-		if err != nil {
-			mainLogger.With(
-				zap.String("file_path", providerFilePath),
-			).Error("Error writing file.", zap.Error(err))
-
-			return
-		}
-
-		mainLogger.With(
-			zap.String("file_path", providerFilePath),
-		).Info("File written.")
+	// generate
+	generator, err := generator.New(providers, outputDir)
+	if err != nil {
+		mainLogger.Error("Error creating generator.", zap.Error(err))
+		return
 	}
+
+	err = generator.Generate()
+	if err != nil {
+		mainLogger.Error("Error generating.", zap.Error(err))
+		return
+	}
+
+	mainLogger.Info("Done.")
 }
