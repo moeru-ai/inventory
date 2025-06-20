@@ -175,7 +175,6 @@ func main() {
 	}
 
 	// detect capabilities
-
 	for _, provider := range providers {
 		for _, model := range provider.Models {
 			detectEndpoints(model, provider, context.TODO())
