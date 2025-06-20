@@ -6,34 +6,36 @@ export const {{ .Name }}: Provider = {
   name: "{{ .Name }}",
   apiBaseURL: "{{ .APIBaseURL }}",
   endpoints: {
-    {{ range $type, $path := .Endpoints }}"{{ $type }}": "{{ $path }}",
-    {{ end }}
+    {{- range $type, $path := .Endpoints -}}
+    "{{ $type }}": "{{ $path }}",
+    {{- end -}}
   },
   models: [
-    {{ range $model := .Models }}{
+    {{- range $model := .Models -}}
+    {
       modelId: "{{ $model.ModelID }}",
       provider: "{{ $model.Provider }}",
       endpoints: [
-        {{ range $endpoint := $model.Endpoints -}}
+        {{- range $endpoint := $model.Endpoints -}}
         "{{ $endpoint }}",
-        {{ end }}
+        {{- end -}}
       ],
       capabilities: [
-        {{ range $capability := $model.Capabilities -}}
+        {{- range $capability := $model.Capabilities -}}
         "{{ $capability }}",
-        {{ end }}
+        {{- end -}}
       ],
       inputModalities: [
-        {{ range $modality := $model.InputModalities -}}
+        {{- range $modality := $model.InputModalities -}}
           "{{ $modality }}",
-        {{ end }}
+        {{- end -}}
       ],
       outputModalities: [
-        {{ range $modality := $model.OutputModalities -}}
+        {{- range $modality := $model.OutputModalities -}}
           "{{ $modality }}",
-        {{ end }}
+        {{- end -}}
       ],
     },
-    {{ end }}
+    {{- end -}}
   ],
 }

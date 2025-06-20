@@ -18,47 +18,15 @@ import type { Provider } from "../types/index";
 export const test: Provider = {
   name: "test",
   apiBaseURL: "https://api.test.com",
-  endpoints: {
-    "audio-music": "/audio/music",
-    "audio-speech": "/audio/speech",
-    "chat-completion": "/chat/completions",
-    "completion": "/completions",
-    "embedding": "/embeddings",
-    "image-generation": "/images/generations",
-  },
-  models: [
-    {
+  endpoints: {"audio-music": "/audio/music","audio-speech": "/audio/speech","chat-completion": "/chat/completions","completion": "/completions","embedding": "/embeddings","image-generation": "/images/generations",},
+  models: [{
       modelId: "test",
       provider: "test",
-      endpoints: [
-        "audio-music",
-        "audio-speech",
-        "chat-completion",
-        "completion",
-        "embedding",
-        "image-generation",
-      ],
-      capabilities: [
-        "reasoning",
-        "streaming",
-        "tool-call",
-      ],
-      inputModalities: [
-        "audio",
-        "image",
-        "text",
-        "video",
-        "vector",
-      ],
-      outputModalities: [
-        "audio",
-        "image",
-        "text",
-        "video",
-        "vector",
-      ],
-    },
-  ],
+      endpoints: ["audio-music","audio-speech","chat-completion","completion","embedding","image-generation",],
+      capabilities: ["reasoning","streaming","tool-call",],
+      inputModalities: ["audio","image","text","video","vector",],
+      outputModalities: ["audio","image","text","video","vector",],
+    },],
 }
 `
 
