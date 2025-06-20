@@ -13,3 +13,28 @@ export interface Model {
   outputModalities: string[];
   provider: string;
 }
+
+// Enums, for type safety and autocomplete
+
+export enum Capability {
+  ToolCall = "tool-call",
+  Reasoning = "reasoning",
+  Streaming = "streaming",
+}
+
+export enum Modality {
+  Text = "text",
+  Image = "image",
+  Audio = "audio",
+  Video = "video",
+  Vector = "vector",
+}
+
+export enum EndpointType {
+  ChatCompletion = "chat-completion",
+  Completion = "completion",
+  Embedding = "embedding",
+  ImageGeneration = "image-generation",
+  AudioSpeech = "audio-speech",
+  AudioMusic = "audio-music",
+}
