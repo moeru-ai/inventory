@@ -8,5 +8,6 @@
     "model-catalog"
   ],
   "author": "moeru-ai",
-  "license": "MIT"
+  "license": "MIT",
+  "packageManager": "pnpm@10.12.1"
 }
