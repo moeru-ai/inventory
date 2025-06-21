@@ -153,9 +153,7 @@ func main() {
 		if apiKey == "" {
 			mainLogger.With(
 				zap.String("provider", provider.Name),
-			).Error("No API key found for provider.")
-
-			return
+			).Fatal("No API key found for provider.")
 		}
 	}
 
@@ -169,9 +167,7 @@ func main() {
 	if err != nil {
 		mainLogger.With(
 			zap.String("output_dir", outputDir),
-		).Error("Error creating output directory.", zap.Error(err))
-
-		return
+		).Fatal("Error creating output directory.", zap.Error(err))
 	}
 
 	// detect capabilities
@@ -183,21 +179,18 @@ func main() {
 
 	err = errorGroup.Wait()
 	if err != nil {
-		mainLogger.Error("Error detecting endpoints. Stopping...", zap.Error(err))
-		return
+		mainLogger.Fatal("Error detecting endpoints. Stopping...", zap.Error(err))
 	}
 
 	// generate
 	generator, err := generator.New(providers, outputDir)
 	if err != nil {
-		mainLogger.Error("Error creating generator.", zap.Error(err))
-		return
+		mainLogger.Fatal("Error creating generator.", zap.Error(err))
 	}
 
 	err = generator.Generate()
 	if err != nil {
-		mainLogger.Error("Error generating.", zap.Error(err))
-		return
+		mainLogger.Fatal("Error generating.", zap.Error(err))
 	}
 
 	mainLogger.Info("Done.")
