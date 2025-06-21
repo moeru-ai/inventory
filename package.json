@@ -4,5 +4,6 @@
   "author": {
     "name": "moeru-ai",
     "url": "https://moeru.ai"
-  }
+  },
+  "packageManager": "pnpm@10.12.1"
 }
