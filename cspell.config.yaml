@@ -39,5 +39,6 @@ words:
   - stdoutmetric
   - stdouttrace
   - Unmute
+  - chatcompletion
 ignoreWords: []
 import: []
