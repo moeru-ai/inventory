@@ -1,14 +1,21 @@
 {
-  "name": "inventory",
+  "name": "@moeru-ai/inventory-root",
   "private": true,
-  "author": {
-    "name": "moeru-ai",
-    "url": "https://moeru.ai"
-  },
+  "type": "module",
   "packageManager": "pnpm@10.12.1",
   "scripts": {
     "build": "pnpm -rF=\"./packages/*\" run build",
-    "typecheck": "pnpm -rF=\"./packages/*\" run typecheck",
-    "lint": "pnpm -rF=\"./packages/*\" run lint"
+    "test": "pnpm -rF=\"./packages/*\" run test",
+    "test:run": "pnpm -rF=\"./packages/*\" run test:run",
+    "lint": "pnpm -rF=\"./packages/*\" run lint",
+    "lint:fix": "pnpm -rF=\"./packages/*\" run lint:fix",
+    "typecheck": "pnpm -rF=\"./packages/*\" run --parallel typecheck",
+    "up": "taze -w -r -I -f && pnpm prune && pnpm dedupe"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.15.0",
+    "eslint": "^9.29.0",
+    "taze": "^19.1.0",
+    "tsdown": "^0.12.8"
   }
 }

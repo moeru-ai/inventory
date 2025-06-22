@@ -72,4 +72,18 @@ temp/
 # Debug
 __debug*
 
-node_modules/
+# Node
+node_modules
+dist
+dist-ssr
+*.local
+
+# Temporary / Codegen files
+.nuxt
+.temp
+.vite-inspect
+**/temp/
+**/out/*
+
+# Golang
+**/pkg/sumdb/
