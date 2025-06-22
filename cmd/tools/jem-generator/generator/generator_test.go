@@ -39,7 +39,7 @@ export const providers = [{
 			},
 		}
 		result, err := generator.generateProviders()
-		a.NoError(err)
+		require.NoError(t, err)
 		a.Equal(expected, string(result))
 	})
 
