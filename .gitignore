@@ -71,3 +71,5 @@ temp/
 
 # Debug
 __debug*
+
+node_modules/
