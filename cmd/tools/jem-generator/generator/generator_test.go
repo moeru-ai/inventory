@@ -5,6 +5,7 @@ import (
 
 	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/types"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestGenerator(t *testing.T) {
