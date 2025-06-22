@@ -11,19 +11,17 @@
     "model-catalog"
   ],
   "exports": {
-    ".": "./index.ts"
+    ".": "./index.ts",
+    "./package.json": "./package.json"
   },
   "main": "index.js",
   "scripts": {
     "build": "tsdown",
-    "typecheck": "tsc --noEmit && typescript-docs-verifier ./README.md",
-    "lint": "eslint --flag unstable_native_nodejs_ts_config"
-  },
-  "devDependencies": {
-    "@antfu/eslint-config": "^4.15.0",
-    "eslint": "^9.29.0",
-    "tsdown": "^0.12.8",
-    "typescript-docs-verifier": "^2.5.3"
+    "lint": "eslint --flag unstable_native_nodejs_ts_config",
+    "lint:fix": "eslint --flag unstable_native_nodejs_ts_config --fix",
+    "test": "vitest --coverage",
+    "test:run": "vitest run",
+    "typecheck": "tsc --noEmit"
   },
   "publishConfig": {
     "access": "public",
