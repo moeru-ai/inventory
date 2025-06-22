@@ -1,41 +1,17 @@
 // Auto-generated file. Do not edit.
 
-import type { Provider, Model } from "../types/index";
+import type { Provider } from "./types";
 
-export const {{ .Name }} = {
-  name: "{{ .Name }}",
-  apiBaseURL: "{{ .APIBaseURL }}",
-  endpoints: {
+export const providers = [
+  {{- range $provider := . -}}
+  {
+    name: "{{ .Name }}",
+    apiBaseURL: "{{ .APIBaseURL }}",
+    endpoints: {
     {{- range $type, $path := .Endpoints -}}
     "{{ $type }}": "{{ $path }}",
     {{- end -}}
-  },
-  models: [
-    {{- range $model := .Models -}}
-    {
-      modelId: "{{ $model.ModelID }}",
-      provider: "{{ $model.Provider }}",
-      endpoints: [
-        {{- range $endpoint := $model.Endpoints -}}
-        "{{ $endpoint }}",
-        {{- end -}}
-      ],
-      capabilities: [
-        {{- range $capability := $model.Capabilities -}}
-        "{{ $capability }}",
-        {{- end -}}
-      ],
-      inputModalities: [
-        {{- range $modality := $model.InputModalities -}}
-          "{{ $modality }}",
-        {{- end -}}
-      ],
-      outputModalities: [
-        {{- range $modality := $model.OutputModalities -}}
-          "{{ $modality }}",
-        {{- end -}}
-      ],
     },
-    {{- end -}}
-  ] as const satisfies Model[],
-} as const satisfies Provider
+  },
+  {{- end -}}
+] as const satisfies Provider[]

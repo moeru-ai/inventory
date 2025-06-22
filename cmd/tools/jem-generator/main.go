@@ -10,23 +10,18 @@ import (
 	"slices"
 
 	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/generator"
-	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/providers/minimax"
-	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/providers/openai"
+	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/providers"
 	"github.com/moeru-ai/inventory/cmd/tools/jem-generator/types"
 	"github.com/nekomeowww/xo/logger"
+	"github.com/samber/lo"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"golang.org/x/sync/errgroup"
 )
 
-var providers = []types.Provider{
-	openai.Provider,
-	minimax.Provider,
-}
-
 var apiKeyMap = map[string]string{
-	openai.Provider.Name:  os.Getenv("OPENAI_API_KEY"),
-	minimax.Provider.Name: os.Getenv("MINIMAX_API_KEY"),
+	providers.ProviderNameOpenai:  os.Getenv("OPENAI_API_KEY"),
+	providers.ProviderNameMinimax: os.Getenv("MINIMAX_API_KEY"),
 }
 
 var errorGroup = new(errgroup.Group)
@@ -148,7 +143,7 @@ func detectEndpoints(model types.Model, provider types.Provider, ctx context.Con
 
 func main() {
 	// load configurations
-	for _, provider := range providers {
+	for _, provider := range providers.Providers {
 		apiKey := apiKeyMap[provider.Name]
 		if apiKey == "" {
 			mainLogger.With(
@@ -171,10 +166,17 @@ func main() {
 	}
 
 	// detect capabilities
-	for _, provider := range providers {
-		for _, model := range provider.Models {
-			detectEndpoints(model, provider, context.TODO())
+	for _, model := range providers.Models {
+		provider, ok := lo.Find(providers.Providers, func(item types.Provider) bool {
+			return item.Name == model.Provider
+		})
+		if !ok {
+			mainLogger.With(
+				zap.String("model", model.ModelID),
+			).Fatal("Provider not found.")
 		}
+
+		detectEndpoints(model, provider, context.TODO())
 	}
 
 	err = errorGroup.Wait()
@@ -183,7 +185,7 @@ func main() {
 	}
 
 	// generate
-	generator, err := generator.New(providers, outputDir)
+	generator, err := generator.New(providers.Providers, providers.Models, outputDir)
 	if err != nil {
 		mainLogger.Fatal("Error creating generator.", zap.Error(err))
 	}

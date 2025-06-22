@@ -1,4 +1,4 @@
-package openai
+package providers
 
 import (
 	"fmt"
@@ -17,11 +17,11 @@ var openaiLogger, _ = logger.NewLogger(
 	logger.WithNamespace("openai"),
 )
 
-const providerName = "openai"
+const ProviderNameOpenai = "openai"
 
-var Provider = types.Provider{
+var providerOpenai = types.Provider{
 	APIBaseURL: "https://api.openai.com/v1",
-	Name:       providerName,
+	Name:       ProviderNameOpenai,
 	Endpoints: map[types.EndpointType]string{
 		types.EndpointTypeChatCompletion: "/chat/completions",
 	},
@@ -42,23 +42,24 @@ var Provider = types.Provider{
 			return nil
 		},
 	},
-	Models: []types.Model{
-		{
-			ModelID:  "gpt-4o",
-			Provider: providerName,
-			Endpoints: []types.EndpointType{
-				types.EndpointTypeChatCompletion,
-			},
-			Capabilities: []types.Capability{
-				types.CapabilityToolCall,
-				types.CapabilityStreaming,
-			},
-			InputModalities: []types.Modality{
-				types.ModalityText,
-			},
-			OutputModalities: []types.Modality{
-				types.ModalityText,
-			},
+}
+
+var modelsOpenai = []types.Model{
+	{
+		ModelID:  "gpt-4o",
+		Provider: ProviderNameOpenai,
+		Endpoints: []types.EndpointType{
+			types.EndpointTypeChatCompletion,
+		},
+		Capabilities: []types.Capability{
+			types.CapabilityToolCall,
+			types.CapabilityStreaming,
+		},
+		InputModalities: []types.Modality{
+			types.ModalityText,
+		},
+		OutputModalities: []types.Modality{
+			types.ModalityText,
 		},
 	},
 }
