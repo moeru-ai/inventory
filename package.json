@@ -5,5 +5,10 @@
     "name": "moeru-ai",
     "url": "https://moeru.ai"
   },
-  "packageManager": "pnpm@10.12.1"
+  "packageManager": "pnpm@10.12.1",
+  "scripts": {
+    "build": "pnpm -rF=\"./packages/*\" run build",
+    "typecheck": "pnpm -rF=\"./packages/*\" run typecheck",
+    "lint": "pnpm -rF=\"./packages/*\" run lint"
+  }
 }

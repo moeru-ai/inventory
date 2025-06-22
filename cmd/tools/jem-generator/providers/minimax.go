@@ -1,4 +1,4 @@
-package minimax
+package providers
 
 import (
 	"encoding/json"
@@ -13,7 +13,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-const providerName = "minimax"
+const ProviderNameMinimax = "minimax"
 
 var miniMaxLogger, _ = logger.NewLogger(
 	logger.WithLevel(zapcore.DebugLevel),
@@ -41,9 +41,9 @@ func checkChatCompletionResponse(responseBodyStr string) error {
 	return nil
 }
 
-var Provider = types.Provider{
+var providerMinimax = types.Provider{
 	APIBaseURL: "https://api.minimaxi.com/v1",
-	Name:       providerName,
+	Name:       ProviderNameMinimax,
 	Endpoints: map[types.EndpointType]string{
 		types.EndpointTypeChatCompletion: "/text/chatcompletion_v2",
 	},
@@ -82,23 +82,24 @@ var Provider = types.Provider{
 			return nil
 		},
 	},
-	Models: []types.Model{
-		{
-			ModelID:  "MiniMax-Text-01",
-			Provider: providerName,
-			Endpoints: []types.EndpointType{
-				types.EndpointTypeChatCompletion,
-			},
-			Capabilities: []types.Capability{
-				types.CapabilityToolCall,
-				types.CapabilityStreaming,
-			},
-			InputModalities: []types.Modality{
-				types.ModalityText,
-			},
-			OutputModalities: []types.Modality{
-				types.ModalityText,
-			},
+}
+
+var modelsMinimax = []types.Model{
+	{
+		ModelID:  "MiniMax-Text-01",
+		Provider: ProviderNameMinimax,
+		Endpoints: []types.EndpointType{
+			types.EndpointTypeChatCompletion,
+		},
+		Capabilities: []types.Capability{
+			types.CapabilityToolCall,
+			types.CapabilityStreaming,
+		},
+		InputModalities: []types.Modality{
+			types.ModalityText,
+		},
+		OutputModalities: []types.Modality{
+			types.ModalityText,
 		},
 	},
 }

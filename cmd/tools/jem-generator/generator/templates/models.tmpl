@@ -1,0 +1,32 @@
+// Auto-generated file. Do not edit.
+
+import type { Model } from "./types";
+
+export const models = [
+  {{- range $model := . -}}
+  {
+    modelId: "{{ $model.ModelID }}",
+    provider: "{{ $model.Provider }}",
+    endpoints: [
+      {{- range $endpoint := $model.Endpoints -}}
+      "{{ $endpoint }}",
+      {{- end -}}
+    ],
+    capabilities: [
+      {{- range $capability := $model.Capabilities -}}
+      "{{ $capability }}",
+      {{- end -}}
+    ],
+    inputModalities: [
+      {{- range $modality := $model.InputModalities -}}
+      "{{ $modality }}",
+      {{- end -}}
+    ],
+    outputModalities: [
+      {{- range $modality := $model.OutputModalities -}}
+      "{{ $modality }}",
+      {{- end -}}
+    ],
+  },
+  {{- end -}}
+] as const satisfies Model[]

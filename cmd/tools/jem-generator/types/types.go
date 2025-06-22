@@ -37,7 +37,6 @@ type Provider struct {
 	Name              string                             `json:"name"`
 	Endpoints         map[EndpointType]string            `json:"endpoints"`
 	ParseResponseFunc map[EndpointType]ParseResponseFunc `json:"parse_response_func"`
-	Models            []Model                            `json:"models"`
 }
 
 type Model struct {
