@@ -94,7 +94,7 @@ export const models = [{
 			},
 		}
 		result, err := generator.generateModels()
-		a.NoError(err)
+		require.NoError(t, err)
 		a.Equal(expected, string(result))
 	})
 }
