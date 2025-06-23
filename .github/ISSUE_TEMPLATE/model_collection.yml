@@ -50,6 +50,18 @@ body:
         - label: "video"
         - label: "vector"
 
+  - type: checkboxes
+    attributes:
+      label: "Model Endpoints"
+      description: "The endpoints of the model."
+      options:
+        - label: "chat-completion"
+        - label: "completion"
+        - label: "embedding"
+        - label: "image-generation"
+        - label: "audio-speech"
+        - label: "audio-music"
+
   - type: textarea
     attributes:
       label: "Additional Information"
