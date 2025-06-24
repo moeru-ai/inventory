@@ -1,0 +1,69 @@
+name: Model Collection
+description: Submit a model to the inventory.
+title: "[Model Collection]: "
+labels: ["enhancement"]
+body:
+  - type: input
+    attributes:
+      label: "Provider"
+      description: "The provider of the model."
+      placeholder: "openai"
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: "Model ID"
+      description: "The ID of the model, you can find it in the model's API documentation, example: ID of GPT-4o is `gpt-4o`"
+      placeholder: "o4-mini"
+    validations:
+      required: true
+
+  - type: checkboxes
+    attributes:
+      label: "Model Capabilities"
+      description: "The capabilities of the model."
+      options:
+        - label: "streaming"
+        - label: "reasoning"
+        - label: "tool-call"
+
+  - type: checkboxes
+    attributes:
+      label: "Model Input Modalities"
+      description: "The input modalities of the model."
+      options:
+        - label: "text"
+        - label: "image"
+        - label: "audio"
+        - label: "video"
+        - label: "vector"
+
+  - type: checkboxes
+    attributes:
+      label: "Model Output Modalities"
+      description: "The output modalities of the model."
+      options:
+        - label: "text"
+        - label: "image"
+        - label: "audio"
+        - label: "video"
+        - label: "vector"
+
+  - type: checkboxes
+    attributes:
+      label: "Model Endpoints"
+      description: "The endpoints of the model."
+      options:
+        - label: "chat-completion"
+        - label: "completion"
+        - label: "embedding"
+        - label: "image-generation"
+        - label: "audio-speech"
+        - label: "audio-music"
+
+  - type: textarea
+    attributes:
+      label: "Additional Information"
+      description: "Additional information about the model."
+      placeholder: "Additional information about the model."
