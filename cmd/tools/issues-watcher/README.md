@@ -7,27 +7,27 @@ This tool fetches issues from `https://github.com/moeru-ai/inventory/issues` and
 An issue form structure is like this:
 
 ```markdown
-This issue is about to add/modify model `o4-mini` from `openai` to the inventory.
+This issue is about to add model `o4-mini` from `openai` to the inventory.
 
-## Provider
+### Provider
 
 ```text
 openai
 ```
 
-## Model Name
+### Model Name
 
 ```text
 o4-mini
 ```
 
-## Model Capabilities
+### Model Capabilities
 
 - [x] streaming
 - [x] reasoning
 - [x] tool-call
 
-## Model Input Modalities
+### Model Input Modalities
 
 - [x] text
 - [x] image
@@ -35,7 +35,7 @@ o4-mini
 - [ ] video
 - [ ] vector
 
-## Model Output Modalities
+### Model Output Modalities
 
 - [x] text
 - [ ] image
@@ -43,7 +43,7 @@ o4-mini
 - [ ] video
 - [ ] vector
 
-## Model Endpoints
+### Model Endpoints
 
 - [x] chat-completion
 - [x] completion
@@ -51,6 +51,10 @@ o4-mini
 - [ ] image-generation
 - [ ] audio-speech
 - [ ] audio-music
+
+### Additional Information
+
+Additional information about the model.
 
 ```
 
