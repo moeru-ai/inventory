@@ -6,8 +6,16 @@ body:
   - type: input
     attributes:
       label: "Provider"
-      description: "The provider of the model."
+      description: "The organization that created the model. (e.g., openai, meta)"
       placeholder: "openai"
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: "Model Family"
+      description: "The base name for the model series (e.g., Llama 3, Gemma, GPT-4)."
+      placeholder: "Gemma"
     validations:
       required: true
 
@@ -19,6 +27,37 @@ body:
     validations:
       required: true
 
+  - type: input
+    attributes:
+      label: "Model URL"
+      description: "URL of the model's repository, if not applicable, link to the official model card or product page."
+      placeholder: "https://huggingface.co/google/gemma-3n-E4B-it"
+
+  - type: input
+    attributes:
+      label: "Release Date"
+      description: "The date the model was publicly released."
+      placeholder: "YYYY-MM-DD"
+
+  - type: input
+    attributes:
+      label: "Context Window (Tokens)"
+      description: "Maximum number of tokens in a single request."
+      placeholder: "8192"
+
+  - type: input
+    attributes:
+      label: "Training Data Cutoff"
+      description: "The knowledge cutoff date for the model's training data."
+      placeholder: "YYYY-MM"
+
+  - type: input
+    id: license
+    attributes:
+      label: "License"
+      description: "The software license for the model."
+      placeholder: "Apache 2.0"
+
   - type: checkboxes
     attributes:
       label: "Model Capabilities"
@@ -26,7 +65,7 @@ body:
       options:
         - label: "streaming"
         - label: "reasoning"
-        - label: "tool-call"
+        - label: "tool-calling"
 
   - type: checkboxes
     attributes:
@@ -46,6 +85,7 @@ body:
       options:
         - label: "text"
         - label: "image"
+        - label: "json"
         - label: "audio"
         - label: "video"
         - label: "vector"
@@ -53,7 +93,7 @@ body:
   - type: checkboxes
     attributes:
       label: "Model Endpoints"
-      description: "The endpoints of the model."
+      description: "Supported API endpoints of the model."
       options:
         - label: "chat-completion"
         - label: "completion"
@@ -65,5 +105,5 @@ body:
   - type: textarea
     attributes:
       label: "Additional Information"
-      description: "Additional information about the model."
-      placeholder: "Additional information about the model."
+      description: "Any other relevant details, such as benchmark performance (MMLU, GSM8K), architectural notes, etc."
+      placeholder: "MMLU score: 86.4%"
