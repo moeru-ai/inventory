@@ -44,6 +44,20 @@ body:
       label: "Context Window (Tokens)"
       description: "Maximum number of tokens in a single request."
       placeholder: "8192"
+      
+  - type: dropdown
+    attributes:
+      label: "Architecture"
+      options:
+        - label: Transformer
+        - label: Mixture of Experts (MoE)
+        - label: Other
+
+  - type: input
+    attributes:
+      label: "Parameters (Billions)"
+      description: "The number of parameters in the model, in billions (e.g., 8, 70, 175)."
+      placeholder: "70"
 
   - type: input
     attributes:
@@ -52,7 +66,6 @@ body:
       placeholder: "YYYY-MM"
 
   - type: input
-    id: license
     attributes:
       label: "License"
       description: "The software license for the model."
