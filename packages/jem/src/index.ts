@@ -30,3 +30,5 @@ export function hasCapabilities<N extends ProviderNames, M extends ModelIdsByPro
 
   return result as Record<CapabilitiesByModel<N, M>, boolean>
 }
+
+export { models }

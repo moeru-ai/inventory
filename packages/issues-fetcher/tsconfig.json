@@ -12,7 +12,10 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "paths": {
+      "@proj-airi/jem": ["../jem/src"]
+    }
   },
   "exclude": [
     "**/dist/**",
