@@ -1,12 +1,13 @@
+import type { Model, ModelIdsByProvider, ProviderNames } from '@proj-airi/jem'
+import * as fs from 'node:fs'
+import path from 'node:path'
 import * as process from 'node:process'
+import { models } from '@proj-airi/jem'
+
 import git from 'isomorphic-git'
 import http from 'isomorphic-git/http/node'
-import * as fs from 'node:fs'
-
 import { Octokit } from 'octokit'
 import { parseModelIssue } from './issue-parser'
-import { models, type Model, type ModelIdsByProvider, type ProviderNames } from '@proj-airi/jem'
-import path from 'node:path'
 
 const cwd = process.cwd()
 const modelsFilePath = path.join(cwd, 'packages', 'jem', 'src', 'models.ts')
@@ -81,7 +82,8 @@ async function main() {
       ref: branchName,
       checkout: true,
     })
-  } else {
+  }
+  else {
     await git.checkout({ fs, dir: cwd, ref: branchName })
   }
 
@@ -108,22 +110,22 @@ async function main() {
 
   if (!pr) {
     const pr = await client.rest.pulls.create({
-        owner: 'moeru-ai',
-        repo: 'inventory',
-        head: branchName,
-        base: 'main',
-        title: prTitle,
-        body: prBody,
-      })
+      owner: 'moeru-ai',
+      repo: 'inventory',
+      head: branchName,
+      base: 'main',
+      title: prTitle,
+      body: prBody,
+    })
     prNumber = pr.data.number
     console.log(`Pull request created: #${pr.data.number}`) // TODO: replace with @guiiai/logg
 
     await client.rest.issues.createComment({
-        issue_number: Number(issueId),
-        owner: 'moeru-ai',
-        repo: 'inventory',
-        body: `${prIssueCommentPrefix}${prNumber}`,
-      })
+      issue_number: Number(issueId),
+      owner: 'moeru-ai',
+      repo: 'inventory',
+      body: `${prIssueCommentPrefix}${prNumber}`,
+    })
 
     console.log(`Commented on the issue: #${issueId} with the pull request link.`)
   }

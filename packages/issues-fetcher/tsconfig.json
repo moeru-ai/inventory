@@ -3,6 +3,9 @@
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
+    "paths": {
+      "@proj-airi/jem": ["../jem/src"]
+    },
     "resolveJsonModule": true,
     "strictNullChecks": true,
     "noUnusedLocals": true,
@@ -12,10 +15,7 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "verbatimModuleSyntax": true,
-    "skipLibCheck": true,
-    "paths": {
-      "@proj-airi/jem": ["../jem/src"]
-    }
+    "skipLibCheck": true
   },
   "exclude": [
     "**/dist/**",
