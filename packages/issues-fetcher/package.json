@@ -15,8 +15,8 @@
   "dependencies": {
     "@proj-airi/jem": "workspace:*",
     "isomorphic-git": "^1.32.1",
-    "mdast": "^3.0.0",
     "octokit": "^5.0.3",
+    "remark": "^15.0.1",
     "remark-parse": "^11.0.0",
     "unified": "^11.0.5"
   },
