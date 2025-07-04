@@ -16,7 +16,6 @@ export interface Model {
 
 // Helper to extract checked items from a list
 export function extractCheckedListItems(listNode: List) {
-  console.log(listNode)
   return listNode.children
     .map(item => toString(item))
     .filter(text => text.startsWith('[x]'))
@@ -47,12 +46,12 @@ export function parseModelIssue(markdown: string): Model {
       currentSection = toString(node).trim()
     }
 
-    // Code blocks for Provider and Model Name
-    if (node.type === 'paragraph' && (currentSection === 'Provider' || currentSection === 'Model Name')) {
+    // Code blocks for Provider and Model ID
+    if (node.type === 'paragraph' && (currentSection === 'Provider' || currentSection === 'Model ID')) {
       if (currentSection === 'Provider') {
         model.provider = toString(node)
       }
-      if (currentSection === 'Model Name') {
+      if (currentSection === 'Model ID') {
         model.modelId = toString(node)
       }
     }

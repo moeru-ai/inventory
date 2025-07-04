@@ -1,8 +1,8 @@
-import type { Model } from './issue-parser'
+import type { Model } from './issue-parser.ts'
 import remarkParse from 'remark-parse'
 import { unified } from 'unified'
 import { describe, expect, it } from 'vitest'
-import { extractCheckedListItems, parseModelIssue } from './issue-parser'
+import { extractCheckedListItems, parseModelIssue } from './issue-parser.ts'
 
 describe('extractCheckedListItems', () => {
   it('should extract checked list items', () => {

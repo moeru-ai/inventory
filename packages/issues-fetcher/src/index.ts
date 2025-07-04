@@ -5,12 +5,17 @@ import * as process from 'node:process'
 import { models } from '@proj-airi/jem'
 
 import git from 'isomorphic-git'
-import http from 'isomorphic-git/http/node'
 import { Octokit } from 'octokit'
-import { parseModelIssue } from './issue-parser'
+import { parseModelIssue } from './issue-parser.ts'
+import { createRequire } from 'node:module'
+
+const http = createRequire(import.meta.url)('isomorphic-git/http/node')
+const gitUrl = new URL('https://github.com/moeru-ai/inventory.git')
+gitUrl.password = process.env.GITHUB_TOKEN!
+gitUrl.username = process.env.GITHUB_USERNAME!
 
 const cwd = process.cwd()
-const modelsFilePath = path.join(cwd, 'packages', 'jem', 'src', 'models.ts')
+const modelsFilePath = path.join(cwd, '..', 'jem', 'src', 'models.ts')
 
 function generateModelsFileContent(models: Model<ProviderNames, ModelIdsByProvider<ProviderNames>>[]) {
   return `// Auto-generated file. Do not edit.
@@ -79,8 +84,10 @@ async function main() {
   if (!pr) {
     await git.branch({
       fs,
+      dir: cwd,
       ref: branchName,
       checkout: true,
+      force: true
     })
   }
   else {
@@ -96,13 +103,15 @@ async function main() {
   await fs.promises.writeFile(modelsFilePath, newModelsFileContent)
   console.log(`Wrote to ${modelsFilePath}`)
 
-  await git.add({ fs, dir: cwd, filepath: modelsFilePath })
+  const rootDir = path.join(cwd, '..', '..')
+  await git.add({ fs, dir: rootDir, filepath: path.relative(rootDir, modelsFilePath) })
   let commitMessage = isModified ? `chore: update ${modelInfo.modelId} in the inventory` : `feat: add ${modelInfo.modelId} to the inventory`
   commitMessage += `
 
   Co-authored-by: ${issue.data.user?.login} <${issue.data.user?.id}+${issue.data.user?.login}@users.noreply.github.com>`
-  await git.commit({ fs, dir: cwd, message: commitMessage })
-  await git.push({ fs, http, dir: cwd, ref: branchName, remote: 'origin' })
+  await git.commit({ fs, dir: rootDir, message: commitMessage, author: { name: 'github-actions[bot]', email: 'github-actions@github.com' } })
+  console.log('Committed')
+  await git.push({ fs, http, dir: rootDir, ref: branchName, remote: 'origin', url: gitUrl.toString() })
   console.log(`Pushed to origin/${branchName}`)
 
   const prTitle = isModified ? `chore: update ${modelInfo.modelId} in the inventory` : `feat: add ${modelInfo.modelId} to the inventory`
