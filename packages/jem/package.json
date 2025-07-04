@@ -11,7 +11,7 @@
     "model-catalog"
   ],
   "exports": {
-    ".": "./index.ts",
+    ".": "./src/index.ts",
     "./package.json": "./package.json"
   },
   "main": "index.js",

@@ -11,7 +11,8 @@
     "lint:fix": "pnpm -rF=\"./packages/*\" run lint:fix",
     "typecheck": "pnpm -rF=\"./packages/*\" run --parallel typecheck",
     "up": "taze -w -r -I -f && pnpm prune && pnpm dedupe",
-    "fetch-issues": "pnpm -F=\"./packages/issues-fetcher\" run run"
+    "fetch-issues": "pnpm -F=\"./packages/issues-fetcher\" run run",
+    "jem-validator": "pnpm -F=\"./packages/jem-validator\" run run"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.15.0",
