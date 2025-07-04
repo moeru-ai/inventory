@@ -14,8 +14,8 @@ const gitUrl = new URL('https://github.com/moeru-ai/inventory.git')
 gitUrl.password = process.env.GITHUB_TOKEN!
 gitUrl.username = process.env.GITHUB_USERNAME!
 
-const cwd = process.cwd()
-const modelsFilePath = path.join(cwd, '..', 'jem', 'src', 'models.ts')
+const rootDir = path.join(process.cwd(), '..', '..')
+const modelsFilePath = path.join(rootDir, 'packages', 'jem', 'src', 'models.ts')
 
 function generateModelsFileContent(models: Model<ProviderNames, ModelIdsByProvider<ProviderNames>>[]) {
   return `// Auto-generated file. Do not edit.
@@ -84,14 +84,14 @@ async function main() {
   if (!pr) {
     await git.branch({
       fs,
-      dir: cwd,
+      dir: rootDir,
       ref: branchName,
       checkout: true,
       force: true
     })
   }
   else {
-    await git.checkout({ fs, dir: cwd, ref: branchName })
+    await git.checkout({ fs, dir: rootDir, ref: branchName })
   }
 
   const existingModels = models.filter(
@@ -103,7 +103,6 @@ async function main() {
   await fs.promises.writeFile(modelsFilePath, newModelsFileContent)
   console.log(`Wrote to ${modelsFilePath}`)
 
-  const rootDir = path.join(cwd, '..', '..')
   await git.add({ fs, dir: rootDir, filepath: path.relative(rootDir, modelsFilePath) })
   let commitMessage = isModified ? `chore: update ${modelInfo.modelId} in the inventory` : `feat: add ${modelInfo.modelId} to the inventory`
   commitMessage += `
@@ -111,7 +110,7 @@ async function main() {
   Co-authored-by: ${issue.data.user?.login} <${issue.data.user?.id}+${issue.data.user?.login}@users.noreply.github.com>`
   await git.commit({ fs, dir: rootDir, message: commitMessage, author: { name: 'github-actions[bot]', email: 'github-actions@github.com' } })
   console.log('Committed')
-  await git.push({ fs, http, dir: rootDir, ref: branchName, remote: 'origin', url: gitUrl.toString() })
+  await git.push({ fs, http, dir: rootDir, ref: branchName, remote: 'origin', url: gitUrl.toString(), force: true, remoteRef: `refs/heads/${branchName}` })
   console.log(`Pushed to origin/${branchName}`)
 
   const prTitle = isModified ? `chore: update ${modelInfo.modelId} in the inventory` : `feat: add ${modelInfo.modelId} to the inventory`
