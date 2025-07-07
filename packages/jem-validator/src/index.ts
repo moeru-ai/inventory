@@ -80,8 +80,15 @@ async function checkToolCallGeneration(chat: CommonRequestOptions, modelId: stri
 }
 
 async function main() {
-  const openai = providers.createOpenAI(env.OPENAI_API_KEY!)
-  const minimax = providers.createMinimax(env.MINIMAX_API_KEY!) // FIXME: why API key is wrong?
+  if (!env.OPENAI_API_KEY) {
+    throw new Error('OPENAI_API_KEY is not set')
+  }
+  if (!env.MINIMAX_API_KEY) {
+    throw new Error('MINIMAX_API_KEY is not set')
+  }
+
+  const openai = providers.createOpenAI(env.OPENAI_API_KEY)
+  const minimax = providers.createMinimax(env.MINIMAX_API_KEY) // FIXME: why always `invalid api key`?
 
   for (const model of models) {
     let chat: CommonRequestOptions | undefined
