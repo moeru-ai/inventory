@@ -2,7 +2,7 @@ import type { Model, ModelIdsByProvider, ProviderNames } from '@proj-airi/jem'
 import * as fs from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
-import * as process from 'node:process'
+import { env, exit } from 'node:process'
 
 import { models } from '@proj-airi/jem'
 import git from 'isomorphic-git'
@@ -27,14 +27,14 @@ function generateModelsFileContent(models: Model<ProviderNames, ModelIdsByProvid
 }
 
 async function main() {
-  const issueId = process.env.ISSUE_ID
-  const isModified = process.env.TRIGGER_ACTION === 'edited'
+  const issueId = env.ISSUE_ID
+  const isModified = env.TRIGGER_ACTION === 'edited'
 
   if (!issueId) {
     throw new Error('ISSUE_ID is not set')
   }
 
-  const client = new Octokit({ auth: process.env.GITHUB_TOKEN })
+  const client = new Octokit({ auth: env.GITHUB_TOKEN })
 
   const issue = await client.rest.issues.get({
     issue_number: Number(issueId),
@@ -139,4 +139,7 @@ async function main() {
   }
 }
 
-main().catch(console.error)
+main().catch((err) => {
+  console.error(err)
+  exit(1)
+})
