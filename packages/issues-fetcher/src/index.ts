@@ -2,19 +2,20 @@ import type { Model, ModelIdsByProvider, ProviderNames } from '@proj-airi/jem'
 import * as fs from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
-import { env, exit } from 'node:process'
+import { cwd, env, exit } from 'node:process'
 
 import { models } from '@proj-airi/jem'
 import git from 'isomorphic-git'
 import { Octokit } from 'octokit'
 import { parseModelIssue } from './issue-parser.ts'
+import { execa } from 'execa'
 
 const http = createRequire(import.meta.url)('isomorphic-git/http/node')
 const gitUrl = new URL('https://github.com/moeru-ai/inventory.git')
-gitUrl.password = process.env.GITHUB_TOKEN!
-gitUrl.username = process.env.GITHUB_USERNAME!
+gitUrl.password = env.GITHUB_TOKEN!
+gitUrl.username = env.GITHUB_USERNAME!
 
-const rootDir = path.join(process.cwd(), '..', '..')
+const rootDir = path.join(cwd(), '..', '..')
 const modelsFilePath = path.join(rootDir, 'packages', 'jem', 'src', 'models.ts')
 
 function generateModelsFileContent(models: Model<ProviderNames, ModelIdsByProvider<ProviderNames>>[]) {
@@ -79,6 +80,7 @@ async function main() {
       repo: 'inventory',
       pull_number: prNumber,
     })
+    console.log(`Pull request found: #${prNumber}`)
   }
 
   if (!pr) {
@@ -89,9 +91,12 @@ async function main() {
       checkout: true,
       force: true,
     })
+    console.log(`Created a new branch: ${branchName}`)
   }
   else {
+    await git.fetch({ fs, dir: rootDir, http })
     await git.checkout({ fs, dir: rootDir, ref: branchName })
+    console.log(`Checked out the branch: ${branchName}`)
   }
 
   const existingModels = models.filter(
@@ -102,6 +107,14 @@ async function main() {
   const newModelsFileContent = generateModelsFileContent(existingModels)
   await fs.promises.writeFile(modelsFilePath, newModelsFileContent)
   console.log(`Wrote to ${modelsFilePath}`)
+
+  console.log('Running ESLint...')
+  const { stdout: eslintOutput, stderr: eslintError, exitCode } = await execa('pnpm', ['-F', '@proj-airi/jem', 'run', 'lint:fix'])
+  console.log(eslintOutput)
+
+  if (exitCode !== 0) {
+    throw new Error(`ESLint failed: ${eslintError}`)
+  }
 
   await git.add({ fs, dir: rootDir, filepath: path.relative(rootDir, modelsFilePath) })
   let commitMessage = isModified ? `chore: update ${modelInfo.modelId} in the inventory` : `feat: add ${modelInfo.modelId} to the inventory`
