@@ -1,6 +1,6 @@
 // Auto-generated file. Do not edit.
 
-import type { Model } from './types'
+import type { Model } from './types.ts'
 
 export const models = [
   {
