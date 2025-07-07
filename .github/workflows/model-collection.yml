@@ -26,3 +26,8 @@ jobs:
 
       - name: Run issues fetcher
         run: pnpm run fetch-issues
+        env:
+          ISSUE_ID: ${{ github.event.issue.number }}
+          TRIGGER_ACTION: ${{ github.event.action }}
+          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_USERNAME: github-actions
