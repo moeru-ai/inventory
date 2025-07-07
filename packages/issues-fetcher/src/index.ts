@@ -72,8 +72,8 @@ async function main() {
   let prNumber: number | undefined
   let pr: Awaited<ReturnType<typeof client.rest.pulls.get>> | undefined
 
-  if (pullRequestComment) {
-    prNumber = Number(pullRequestComment.body!.slice(prIssueCommentPrefix.length).trim())
+  if (pullRequestComment?.body) {
+    prNumber = Number(pullRequestComment.body.slice(prIssueCommentPrefix.length).trim())
     pr = await client.rest.pulls.get({
       owner: 'moeru-ai',
       repo: 'inventory',
