@@ -5,10 +5,10 @@ import path from 'node:path'
 import { cwd, env, exit } from 'node:process'
 
 import { models } from '@proj-airi/jem'
+import { execa } from 'execa'
 import git from 'isomorphic-git'
 import { Octokit } from 'octokit'
 import { parseModelIssue } from './issue-parser.ts'
-import { execa } from 'execa'
 
 const http = createRequire(import.meta.url)('isomorphic-git/http/node')
 const gitUrl = new URL('https://github.com/moeru-ai/inventory.git')
@@ -21,7 +21,7 @@ const modelsFilePath = path.join(rootDir, 'packages', 'jem', 'src', 'models.ts')
 function generateModelsFileContent(models: Model<ProviderNames, ModelIdsByProvider<ProviderNames>>[]) {
   return `// Auto-generated file. Do not edit.
 
-  import type { Model } from './types'
+  import type { Model } from './types.ts'
 
   export const models = ${JSON.stringify(models, null, 2)} as const satisfies Model[]
   `
