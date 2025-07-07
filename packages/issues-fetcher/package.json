@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@proj-airi/jem": "workspace:*",
+    "execa": "^9.6.0",
     "isomorphic-git": "^1.32.1",
     "octokit": "^5.0.3",
     "remark": "^15.0.1",
