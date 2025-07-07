@@ -72,4 +72,4 @@ const model = {
 
 ### Why we don't need a provider issue form structure?
 
-If a model is from a unknown provider, CI pipeline will fail so we will add the provider manually.
+If a model is from an unknown provider, CI pipeline will fail so we will add the provider manually.
