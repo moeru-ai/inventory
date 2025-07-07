@@ -80,6 +80,7 @@ async function main() {
       repo: 'inventory',
       pull_number: prNumber,
     })
+    console.log(`Pull request found: #${prNumber}`)
   }
 
   if (!pr) {
@@ -90,9 +91,12 @@ async function main() {
       checkout: true,
       force: true,
     })
+    console.log(`Created a new branch: ${branchName}`)
   }
   else {
+    await git.fetch({ fs, dir: rootDir, http })
     await git.checkout({ fs, dir: rootDir, ref: branchName })
+    console.log(`Checked out the branch: ${branchName}`)
   }
 
   const existingModels = models.filter(
