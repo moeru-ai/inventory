@@ -1,5 +1,5 @@
-import type { providers } from './providers'
-import { models } from './models'
+import type { providers } from './providers.ts'
+import { models } from './models.ts'
 
 export type Providers = typeof providers
 export type ProviderNames = Providers[number]['name']
@@ -30,3 +30,5 @@ export function hasCapabilities<N extends ProviderNames, M extends ModelIdsByPro
 
   return result as Record<CapabilitiesByModel<N, M>, boolean>
 }
+
+export { models }

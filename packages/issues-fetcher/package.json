@@ -1,0 +1,29 @@
+{
+  "name": "@proj-airi/issues-fetcher",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.12.1",
+  "scripts": {
+    "build": "tsdown",
+    "lint": "eslint --flag unstable_native_nodejs_ts_config",
+    "lint:fix": "eslint --flag unstable_native_nodejs_ts_config --fix",
+    "test": "vitest --coverage",
+    "typecheck": "tsc --noEmit",
+    "run": "dotenvx run -- node src/index.ts"
+  },
+  "dependencies": {
+    "@proj-airi/jem": "workspace:*",
+    "isomorphic-git": "^1.32.1",
+    "octokit": "^5.0.3",
+    "remark": "^15.0.1",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.5"
+  },
+  "devDependencies": {
+    "@types/mdast": "^4.0.4",
+    "@types/node": "^24",
+    "mdast-util-to-string": "^4.0.0",
+    "unist-util-visit": "^5.0.0"
+  }
+}

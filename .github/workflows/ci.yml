@@ -107,25 +107,48 @@ jobs:
       - name: Typecheck
         run: pnpm typecheck
 
-  test-jem-generation:
-    name: Test JEM Generation
+  test-ts:
+    name: Test TypeScript
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Go
-        uses: actions/setup-go@v5
+      - uses: pnpm/action-setup@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
         with:
-          go-version: "^1.24"
-          cache: true
+          node-version: 24.x
+          cache: "pnpm"
 
-      - name: Run JEM Generator
-        run: go run "github.com/moeru-ai/inventory/cmd/tools/jem-generator"
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Test
+        run: pnpm test
+
+  run-jem-validator:
+    name: Run JEM Validator
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run JEM Validator
+        run: pnpm run jem-validator
         env:
           OPENAI_API_KEY: ${{ secrets.JEM_OPENAI_API_KEY }}
           MINIMAX_API_KEY: ${{ secrets.JEM_MINIMAX_API_KEY }}
-          OUTPUT_DIR: "jem-dist"
 
   unittest:
     name: Unit Test

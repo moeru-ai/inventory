@@ -1,6 +1,6 @@
 // Auto-generated file. Do not edit.
 
-import type { Provider } from './types'
+import type { Provider } from './types.ts'
 
 export const providers = [{
   name: 'openai',
