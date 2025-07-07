@@ -30,7 +30,7 @@ describe('parseModelIssue', () => {
 
 openai
 
-### Model Name
+### Model ID
 
 o4-mini
 

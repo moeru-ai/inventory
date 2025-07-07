@@ -8,7 +8,6 @@
     "build": "tsdown",
     "lint": "eslint --flag unstable_native_nodejs_ts_config",
     "lint:fix": "eslint --flag unstable_native_nodejs_ts_config --fix",
-    "test": "vitest --coverage",
     "typecheck": "tsc --noEmit",
     "run": "dotenvx run -- node src/index.ts"
   },
