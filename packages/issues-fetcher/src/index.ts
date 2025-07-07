@@ -1,13 +1,13 @@
 import type { Model, ModelIdsByProvider, ProviderNames } from '@proj-airi/jem'
 import * as fs from 'node:fs'
+import { createRequire } from 'node:module'
 import path from 'node:path'
 import * as process from 'node:process'
-import { models } from '@proj-airi/jem'
 
+import { models } from '@proj-airi/jem'
 import git from 'isomorphic-git'
 import { Octokit } from 'octokit'
 import { parseModelIssue } from './issue-parser.ts'
-import { createRequire } from 'node:module'
 
 const http = createRequire(import.meta.url)('isomorphic-git/http/node')
 const gitUrl = new URL('https://github.com/moeru-ai/inventory.git')
@@ -87,7 +87,7 @@ async function main() {
       dir: rootDir,
       ref: branchName,
       checkout: true,
-      force: true
+      force: true,
     })
   }
   else {

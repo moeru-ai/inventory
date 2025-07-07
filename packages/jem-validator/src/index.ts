@@ -1,5 +1,5 @@
 import type { CommonRequestOptions } from 'xsai'
-import { env } from 'node:process'
+import { env, exit } from 'node:process'
 import { readableStreamToAsyncIterator } from '@moeru/std'
 import { models } from '@proj-airi/jem'
 import * as providers from '@xsai-ext/providers-cloud'
@@ -124,5 +124,5 @@ async function main() {
 
 main().catch((error) => {
   console.error(error)
-  process.exit(1)
+  exit(1)
 })
