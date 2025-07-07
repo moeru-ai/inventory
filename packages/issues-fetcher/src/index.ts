@@ -56,7 +56,7 @@ async function main() {
     throw new Error('Provider not found in the issue body')
   }
   const existingModel = models.find(it => it.modelId === modelInfo.modelId)
-  if (existingModel === modelInfo) {
+  if (existingModel && JSON.stringify(existingModel) === JSON.stringify(modelInfo)) {
     throw new Error('Existing model is the same as the new model')
   }
 
@@ -95,7 +95,7 @@ async function main() {
   }
 
   const existingModels = models.filter(
-    it => it.provider !== modelInfo.provider && it.modelId !== modelInfo.modelId,
+    it => it.provider !== modelInfo.provider || it.modelId !== modelInfo.modelId,
   )
   existingModels.push(modelInfo as Model<ProviderNames, ModelIdsByProvider<ProviderNames>>)
 
