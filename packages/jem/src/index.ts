@@ -31,6 +31,4 @@ export function hasCapabilities<N extends ProviderNames, M extends ModelIdsByPro
   return result as Record<CapabilitiesByModel<N, M>, boolean>
 }
 
-providers[1].apiBaseURL({})
-
 export { models, providers }

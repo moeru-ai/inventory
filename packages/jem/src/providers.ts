@@ -4,7 +4,7 @@ import type { Provider } from './types.ts'
 
 export const providers = [
   { name: 'anthropic', apiBaseURL: 'https://api.anthropic.com/v1/', endpoints: { 'chat-completion': '/chat/completions' } },
-  { name: 'azure', apiBaseURL: ({ resourceName }) => `https://${resourceName}.services.ai.azure.com/models/`, endpoints: { 'chat-completion': '/chat/completions' } },
+  { name: 'azure', apiBaseURL: ({ resourceName }: { resourceName: string }) => `https://${resourceName}.services.ai.azure.com/models/`, endpoints: { 'chat-completion': '/chat/completions' } },
   { name: 'cerebras', apiBaseURL: 'https://api.cerebras.ai/v1/', endpoints: { 'chat-completion': '/chat/completions' } },
   { name: 'deepinfra', apiBaseURL: 'https://api.deepinfra.com/v1/openai/', endpoints: { 'chat-completion': '/chat/completions' } },
   { name: 'deepseek', apiBaseURL: 'https://api.deepseek.com/', endpoints: { 'chat-completion': '/chat/completions' } },
@@ -24,7 +24,7 @@ export const providers = [
   { name: 'stepfun', apiBaseURL: 'https://api.stepfun.com/v1/', endpoints: { 'chat-completion': '/chat/completions' } },
   { name: 'tencent-hunyuan', apiBaseURL: 'https://api.hunyuan.cloud.tencent.com/v1/', endpoints: { 'chat-completion': '/chat/completions' } },
   { name: 'together-ai', apiBaseURL: 'https://api.together.xyz/v1/', endpoints: { 'chat-completion': '/chat/completions' } },
-  { name: 'workers-ai', apiBaseURL: ({ accountId }) => `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/v1/`, endpoints: { 'chat-completion': '/chat/completions' } },
+  { name: 'workers-ai', apiBaseURL: ({ accountId }: { accountId: string }) => `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/v1/`, endpoints: { 'chat-completion': '/chat/completions' } },
   { name: 'xai', apiBaseURL: 'https://api.x.ai/v1/', endpoints: { 'chat-completion': '/chat/completions' } },
   { name: 'zhipu', apiBaseURL: 'https://open.bigmodel.cn/api/paas/v4/', endpoints: { 'chat-completion': '/chat/completions' } },
 ] as const satisfies Provider<string[]>[]
