@@ -32,7 +32,7 @@ importers:
 
   packages/issues-fetcher:
     dependencies:
-      '@proj-airi/jem':
+      '@moeru-ai/jem':
         specifier: workspace:*
         version: link:../jem
       execa:
@@ -74,7 +74,7 @@ importers:
       '@moeru/std':
         specifier: 0.1.0-beta.4
         version: 0.1.0-beta.4
-      '@proj-airi/jem':
+      '@moeru-ai/jem':
         specifier: workspace:*
         version: link:../jem
       '@xsai-ext/providers-cloud':

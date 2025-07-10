@@ -1,10 +1,10 @@
-import type { Model, ModelIdsByProvider, ProviderNames } from '@proj-airi/jem'
+import type { Model, ModelIdsByProvider, ProviderNames } from '@moeru-ai/jem'
 import * as fs from 'node:fs'
 import { createRequire } from 'node:module'
 import path from 'node:path'
 import { cwd, env, exit } from 'node:process'
 
-import { models } from '@proj-airi/jem'
+import { models } from '@moeru-ai/jem'
 import { execa } from 'execa'
 import git from 'isomorphic-git'
 import { Octokit } from 'octokit'
@@ -115,7 +115,7 @@ async function main() {
   console.log(`Wrote to ${modelsFilePath}`)
 
   console.log('Running ESLint...')
-  const { stdout: eslintOutput, stderr: eslintError, exitCode } = await execa('pnpm', ['-F', '@proj-airi/jem', 'run', 'lint:fix'])
+  const { stdout: eslintOutput, stderr: eslintError, exitCode } = await execa('pnpm', ['-F', '@moeru-ai/jem', 'run', 'lint:fix'])
   console.log(eslintOutput)
 
   if (exitCode !== 0) {

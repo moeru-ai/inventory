@@ -1,7 +1,7 @@
 import type { CommonRequestOptions } from 'xsai'
 import { env, exit } from 'node:process'
 import { readableStreamToAsyncIterator } from '@moeru/std'
-import { models } from '@proj-airi/jem'
+import { models } from '@moeru-ai/jem'
 import * as providers from '@xsai-ext/providers-cloud'
 import { generateText, streamText, tool } from 'xsai'
 import { z } from 'zod'

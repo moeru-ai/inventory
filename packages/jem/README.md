@@ -7,13 +7,13 @@ Your universal model catalog, strong typed, everything, everywhere, all at once.
 Install the package:
 
 ```bash
-npm install @proj-airi/jem
+npm install @moeru-ai/jem
 ```
 
 Query a model has capabilities:
 
 ```typescript
-import { hasCapabilities } from '@proj-airi/jem'
+import { hasCapabilities } from '@moeru-ai/jem'
 
 const has = hasCapabilities('openai', 'gpt-4o', ['tool-call'])
 ```
@@ -21,8 +21,8 @@ const has = hasCapabilities('openai', 'gpt-4o', ['tool-call'])
 If you don't know what model you will use, you can use `as` keyword to suppress the type error.
 
 ```typescript
-import type { Capabilities, ModelNames, ProviderNames } from '@proj-airi/jem'
-import { hasCapabilities } from '@proj-airi/jem'
+import type { Capabilities, ModelNames, ProviderNames } from '@moeru-ai/jem'
+import { hasCapabilities } from '@moeru-ai/jem'
 
 const has = hasCapabilities('unknown' as ProviderNames, 'unknown' as ModelNames<ProviderNames>, ['unknown'] as Capabilities<ProviderNames>[])
 ```

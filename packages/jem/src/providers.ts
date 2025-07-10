@@ -10,4 +10,8 @@ export const providers = [{
   name: 'minimax',
   apiBaseURL: 'https://api.minimaxi.com/v1',
   endpoints: { 'chat-completion': '/text/chatcompletion_v2' },
+}, {
+  name: 'google',
+  apiBaseURL: 'https://generativelanguage.googleapis.com/v1beta/openai/chat',
+  endpoints: { 'chat-completion': '/chat/completions' },
 }] as const satisfies Provider[]
