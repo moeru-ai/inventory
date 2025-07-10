@@ -49,4 +49,19 @@ export const models = [
     modelId: 'gemini-2.5-flash-preview-tts',
     provider: 'google',
   },
+  {
+    capabilities: [],
+    endpoints: [
+      'image-generation',
+    ],
+    inputModalities: [
+      'text',
+      'image',
+    ],
+    outputModalities: [
+      'image',
+    ],
+    modelId: 'gpt-image-1',
+    provider: 'openai',
+  },
 ] as const satisfies Model[]
