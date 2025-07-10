@@ -84,7 +84,8 @@ async function main() {
 
     if (!existingPr.data.closed_at) {
       pr = existingPr
-    } else {
+    }
+    else {
       console.log(`Pull request closed, need to create a new one: #${prNumber}`)
     }
   }

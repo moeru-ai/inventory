@@ -1,6 +1,6 @@
-export interface Provider {
+export interface Provider<T extends string[]> {
   name: string
-  apiBaseURL: string
+  apiBaseURL: string | ((parameters: { [key in T[number]]: string }) => string)
   endpoints: Record<string, string>
 }
 
