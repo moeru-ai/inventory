@@ -75,12 +75,18 @@ async function main() {
 
   if (pullRequestComment?.body) {
     prNumber = Number(pullRequestComment.body.slice(prIssueCommentPrefix.length).trim())
-    pr = await client.rest.pulls.get({
+    const existingPr = await client.rest.pulls.get({
       owner: 'moeru-ai',
       repo: 'inventory',
       pull_number: prNumber,
     })
     console.log(`Pull request found: #${prNumber}`)
+
+    if (!existingPr.data.closed_at) {
+      pr = existingPr
+    } else {
+      console.log(`Pull request closed, need to create a new one: #${prNumber}`)
+    }
   }
 
   if (!pr) {
