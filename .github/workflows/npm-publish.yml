@@ -1,4 +1,4 @@
-name: Release
+name: NPM Publish
 
 on:
   push:
@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   release:
-    name: Release
+    name: NPM Publish
     runs-on: ubuntu-24.04
     steps:
       - name: Checkout
