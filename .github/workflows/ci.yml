@@ -149,6 +149,8 @@ jobs:
         env:
           OPENAI_API_KEY: ${{ secrets.JEM_OPENAI_API_KEY }}
           MINIMAX_API_KEY: ${{ secrets.JEM_MINIMAX_API_KEY }}
+          MINIMAXI_API_KEY: ${{ secrets.JEM_MINIMAXI_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.JEM_GOOGLE_API_KEY }}
 
   unittest:
     name: Unit Test

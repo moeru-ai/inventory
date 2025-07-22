@@ -45,7 +45,6 @@ async function checkStreamGeneration(chat: CommonRequestOptions, modelId: string
     chunks.push(chunk)
   }
 
-
   console.log(chunks)
   console.log('='.repeat(50))
 }
@@ -97,7 +96,6 @@ async function main() {
   if (!env.GOOGLE_API_KEY) {
     throw new Error('GOOGLE_API_KEY is not set')
   }
-
 
   const openai = providers.createOpenAI(env.OPENAI_API_KEY)
   const minimax = providers.createMinimax(env.MINIMAX_API_KEY)
