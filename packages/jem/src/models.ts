@@ -21,6 +21,23 @@ export const models = [
     ],
   },
   {
+    modelId: 'MiniMax-Text-01',
+    provider: 'minimaxi',
+    endpoints: [
+      'chat-completion',
+    ],
+    capabilities: [
+      'tool-call',
+      'streaming',
+    ],
+    inputModalities: [
+      'text',
+    ],
+    outputModalities: [
+      'text',
+    ],
+  },
+  {
     modelId: 'gpt-4o',
     provider: 'openai',
     endpoints: [

@@ -4,3 +4,7 @@ packages:
 
 onlyBuiltDependencies:
   - esbuild
+
+catalog:
+  xsai: &xsai '^0.3.2'
+  '@xsai-ext/providers-cloud': *xsai

@@ -14,12 +14,12 @@
   "dependencies": {
     "@moeru-ai/jem": "workspace:*",
     "@moeru/std": "0.1.0-beta.4",
-    "@xsai-ext/providers-cloud": "0.3.0-beta.6",
+    "@xsai-ext/providers-cloud": "catalog:",
     "isomorphic-git": "^1.32.1",
     "octokit": "^5.0.3",
     "remark-parse": "^11.0.0",
     "unified": "^11.0.5",
-    "xsai": "0.3.0-beta.6",
+    "xsai": "catalog:",
     "zod": "^3.25.73",
     "zod-to-json-schema": "^3.24.6"
   },

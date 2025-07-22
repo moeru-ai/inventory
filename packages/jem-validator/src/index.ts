@@ -7,6 +7,8 @@ import { generateText, streamText, tool } from 'xsai'
 import { z } from 'zod'
 
 async function checkTextGeneration(chat: CommonRequestOptions, modelId: string) {
+  console.log(`${modelId} - Text Generation:`)
+
   const generateTextResponse = await generateText({
     ...chat,
     messages: [
@@ -14,16 +16,20 @@ async function checkTextGeneration(chat: CommonRequestOptions, modelId: string) 
         content: 'You are a cute cat girl.',
         role: 'system',
       },
+      {
+        content: `What is ${Math.floor(Math.random() * 100)} + ${Math.floor(Math.random() * 100)}?`,
+        role: 'user',
+      },
     ],
   })
 
-  console.log(`${modelId} - Text Generation:`)
-  console.log(chat)
   console.log(generateTextResponse.text)
   console.log('='.repeat(50))
 }
 
 async function checkStreamGeneration(chat: CommonRequestOptions, modelId: string) {
+  console.log(`${modelId} - Stream Generation:`)
+
   const stream = await streamText({
     ...chat,
     messages: [
@@ -39,13 +45,14 @@ async function checkStreamGeneration(chat: CommonRequestOptions, modelId: string
     chunks.push(chunk)
   }
 
-  console.log(`${modelId} - Stream Generation:`)
-  console.log(chat)
+
   console.log(chunks)
   console.log('='.repeat(50))
 }
 
 async function checkToolCallGeneration(chat: CommonRequestOptions, modelId: string) {
+  console.log(`${modelId} - Tool Call Generation:`)
+
   const toolCallResponse = await generateText({
     ...chat,
     messages: [
@@ -73,8 +80,6 @@ async function checkToolCallGeneration(chat: CommonRequestOptions, modelId: stri
     ],
   })
 
-  console.log(`${modelId} - Tool Call Generation:`)
-  console.log(chat)
   console.log(toolCallResponse.text)
   console.log('='.repeat(50))
 }
@@ -86,9 +91,18 @@ async function main() {
   if (!env.MINIMAX_API_KEY) {
     throw new Error('MINIMAX_API_KEY is not set')
   }
+  if (!env.MINIMAXI_API_KEY) {
+    throw new Error('MINIMAX_API_KEY is not set')
+  }
+  if (!env.GOOGLE_API_KEY) {
+    throw new Error('GOOGLE_API_KEY is not set')
+  }
+
 
   const openai = providers.createOpenAI(env.OPENAI_API_KEY)
-  const minimax = providers.createMinimax(env.MINIMAX_API_KEY) // FIXME: why always `invalid api key`?
+  const minimax = providers.createMinimax(env.MINIMAX_API_KEY)
+  const minimaxi = providers.createMinimaxi(env.MINIMAXI_API_KEY)
+  const google = providers.createGoogleGenerativeAI(env.GOOGLE_API_KEY)
 
   for (const model of models) {
     let chat: CommonRequestOptions | undefined
@@ -99,13 +113,30 @@ async function main() {
       case 'minimax':
         chat = minimax.chat(model.modelId)
         break
+      case 'minimaxi':
+        chat = minimaxi.chat(model.modelId)
+        break
+      case 'google':
+        chat = google.chat(model.modelId)
+        break
     }
 
     if (!chat) {
       throw new Error(`Unsupported provider: ${model.provider}`)
     }
 
-    await checkTextGeneration(chat, model.modelId)
+    for (const modality of model.outputModalities) {
+      switch (modality) {
+        case 'audio':
+          // await checkAudioGeneration(chat, model.modelId) TODO: Audio check
+          break
+        case 'text':
+          await checkTextGeneration(chat, model.modelId)
+          break
+        default:
+          throw new Error(`Unsupported modality: ${modality}`)
+      }
+    }
 
     for (const capability of model.capabilities) {
       switch (capability) {
