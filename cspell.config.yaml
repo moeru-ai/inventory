@@ -21,6 +21,8 @@ words:
   - inventoryapiv1
   - labstack
   - maxbrunsfeld
+  - Minimaxi
+  - moeru
   - moeru-ai
   - Neko
   - nekomeowww
@@ -42,5 +44,6 @@ words:
   - taze
   - tsdown
   - Unmute
+  - xsai
 ignoreWords: []
 import: []
