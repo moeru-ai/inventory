@@ -44,6 +44,12 @@ importers:
       '@moeru-ai/jem':
         specifier: workspace:*
         version: link:../jem
+      '@moeru/std':
+        specifier: 0.1.0-beta.4
+        version: 0.1.0-beta.4
+      '@xsai-ext/providers-cloud':
+        specifier: 'catalog:'
+        version: 0.3.5
       execa:
         specifier: ^9.6.0
         version: 9.6.0
@@ -62,6 +68,12 @@ importers:
       unified:
         specifier: ^11.0.5
         version: 11.0.5
+      xsai:
+        specifier: 'catalog:'
+        version: 0.3.5(zod-to-json-schema@3.24.6(zod@3.25.76))(zod@3.25.76)
+      zod:
+        specifier: ^3.25.76
+        version: 3.25.76
     devDependencies:
       '@types/mdast':
         specifier: ^4.0.4
@@ -1016,6 +1028,7 @@ packages:
 
   '@xsai-ext/shared-providers@0.3.5':
     resolution: {integrity: sha512-LO8Y4yvt99F15tjmzuCnz3qYiwP+VQvYTF08Ah0z6SLqKIkNu6s3KyYpoc4MCiMIRwNSs1AHAMYQ7xt4FWPN+w==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
 
   '@xsai/embed@0.3.5':
     resolution: {integrity: sha512-MuJM3c2Zc47/2FHO9UvTTIBZ2tURCTX5TN545XrXV21svPFoFEltvmcV6aruefVL66Tpb0sF3h7PIm857dBCFw==}
